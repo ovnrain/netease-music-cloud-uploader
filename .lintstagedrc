@@ -1,0 +1,4 @@
+{
+  "src/**/*.{ts,tsx}": ["eslint --config .eslintrc.commit.json"],
+  "src/**/*.{css,scss}": ["prettier --write"]
+}

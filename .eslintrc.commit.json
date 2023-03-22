@@ -1,0 +1,13 @@
+{
+  "extends": ["./.eslintrc.json"],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^props$"
+      }
+    ],
+    "prettier/prettier": "error",
+    "no-console": "error"
+  }
+}
