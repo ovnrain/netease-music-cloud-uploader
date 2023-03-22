@@ -7,8 +7,8 @@
     "withGlobalTauri": false
   },
   "package": {
-    "productName": "netease-music-cloud-uploader",
-    "version": "0.0.0"
+    "productName": "网易云音乐云盘上传",
+    "version": "1.0.0"
   },
   "tauri": {
     "allowlist": {
@@ -40,9 +40,9 @@
       {
         "fullscreen": false,
         "resizable": true,
-        "title": "netease-music-cloud-uploader",
-        "width": 800,
-        "height": 600
+        "title": "网易云音乐云盘上传",
+        "width": 1000,
+        "height": 800
       }
     ]
   }
