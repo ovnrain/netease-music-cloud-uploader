@@ -1,10 +1,10 @@
 [package]
 name = "netease-music-cloud-uploader"
-version = "0.0.0"
+version = "1.0.0"
 description = "A Tauri App"
-authors = ["you"]
-license = ""
-repository = ""
+authors = ["ovnrain"]
+license = "MIT"
+repository = "https://github.com/ovnrain/netease-music-cloud-uploader.git"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
