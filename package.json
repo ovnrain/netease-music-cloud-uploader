@@ -4,9 +4,10 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview",
+    "start": "vite",
+    "dev": "tauri dev",
+    "build:web": "tsc && vite build",
+    "build": "tauri build --target x86_64-apple-darwin",
     "tauri": "tauri",
     "format": "prettier --write 'src/**/*.{ts,tsx,css,scss}'",
     "lint": "eslint --ext .ts,.tsx src/**/*.{ts,tsx}",
