@@ -8,7 +8,20 @@ const mobile = process.env.TAURI_PLATFORM === 'android' || process.env.TAURI_PLA
 // https://vitejs.dev/config/
 export default defineConfig(async () => ({
   plugins: [checker({ typescript: true }), react()],
-
+  css: {
+    modules: {
+      /**
+       * @example
+       * .hello-world
+       * 变成
+       * styles.helloWorld
+       * .HelloWorld
+       * 变成
+       * styles.helloWorld
+       */
+      localsConvention: 'camelCaseOnly',
+    },
+  },
   // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
   // prevent vite from obscuring rust errors
   clearScreen: false,
