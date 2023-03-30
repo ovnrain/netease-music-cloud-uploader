@@ -27,6 +27,9 @@ dependencies:
     version: 6.9.0(react-dom@18.2.0)(react@18.2.0)
 
 devDependencies:
+  '@tanstack/eslint-plugin-query':
+    specifier: ^4.27.0
+    version: 4.27.0
   '@tauri-apps/cli':
     specifier: ^1.2.2
     version: 1.2.3
@@ -636,6 +639,10 @@ packages:
     resolution: {integrity: sha512-BJ9SxXux8zAg991UmT8slpwpsd31K1dHHbD3Ba4VzD+liLQ4WAMSxQp2d2ZPRPfN0jN2NPRowcSSoM7lCaF08Q==}
     engines: {node: '>=14'}
     dev: false
+
+  /@tanstack/eslint-plugin-query@4.27.0:
+    resolution: {integrity: sha512-xjRakKhDVdtDwFKNCZnW1c1F7DuRx6ZSyRnKkD5hGPiZQENm63eS20ixaK6GleYtLKWO40FqbjTAcasvmrW2UQ==}
+    dev: true
 
   /@tanstack/match-sorter-utils@8.8.4:
     resolution: {integrity: sha512-rKH8LjZiszWEvmi01NR72QWZ8m4xmXre0OOwlRGnjU01Eqz/QnN+cqpty2PJ0efHblq09+KilvyR7lsbzmXVEw==}

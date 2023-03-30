@@ -24,6 +24,7 @@
     "react-router-dom": "^6.9.0"
   },
   "devDependencies": {
+    "@tanstack/eslint-plugin-query": "^4.27.0",
     "@tauri-apps/cli": "^1.2.2",
     "@types/node": "^18.7.10",
     "@types/qrcode": "^1.5.0",
