@@ -71,8 +71,8 @@ const LoginPage = (props: LoginPageProps) => {
       )}
       {loginStatus?.code === 802 && (
         <div className={styles.userInfo}>
-          <img className={styles.avatar} src={loginStatus.avatarUrl} alt={loginStatus.nikename} />
-          <div className={styles.name}>{loginStatus.nikename}</div>
+          <img className={styles.avatar} src={loginStatus.avatarUrl} alt={loginStatus.nickname} />
+          <div className={styles.name}>{loginStatus.nickname}</div>
           <div className={styles.confirmTip}>请在 APP 上点击确认</div>
         </div>
       )}

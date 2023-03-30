@@ -12,6 +12,6 @@ export interface Unikey {
 export interface LoginStatus {
   code: number;
   message: string;
-  nikename?: string;
+  nickname?: string;
   avatarUrl?: string;
 }
