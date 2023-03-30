@@ -1,5 +1,4 @@
 // import styles from './LoginPage.module.scss';
-import React from 'react';
 
 export interface LoginPageProps {}
 
