@@ -17,6 +17,7 @@
     "@tanstack/react-query": "^4.28.0",
     "@tauri-apps/api": "^1.2.0",
     "clsx": "^1.2.1",
+    "qrcode": "^1.5.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.9.0"
@@ -24,6 +25,7 @@
   "devDependencies": {
     "@tauri-apps/cli": "^1.2.2",
     "@types/node": "^18.7.10",
+    "@types/qrcode": "^1.5.0",
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
     "@typescript-eslint/eslint-plugin": "^5.56.0",
