@@ -21,7 +21,7 @@ const LoginPage = (props: LoginPageProps) => {
   const { data: loginStatus } = useQuery({
     queryKey: ['loginstatus', uniKey],
     queryFn: () => APIS.qrLogin(uniKey as string),
-    refetchInterval: 1000,
+    refetchInterval: (data) => (data?.code === 800 ? false : 1000),
     enabled: !!uniKey && !!qrImg,
   });
 
