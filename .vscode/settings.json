@@ -17,5 +17,6 @@
   },
   "explorer.fileNesting.patterns": {
     ".eslintrc.json": ".eslintrc.*.json"
-  }
+  },
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
