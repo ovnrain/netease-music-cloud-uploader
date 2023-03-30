@@ -2,12 +2,86 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   height: 100vh;
+  padding-top: 100px;
+  box-sizing: border-box;
 }
 
 .title {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 8px;
+  font-size: 32px;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.qrcode {
+  width: 200px;
+  height: 200px;
+  position: relative;
+}
+
+.reload {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.reload-text {
+  color: #ffffff;
+}
+
+.reload-button {
+  margin-top: 16px;
+  color: #ffffff;
+  background-color: #c2463a;
+  border: none;
+  width: 80px;
+  height: 32px;
+  border-radius: 16px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.qrimg {
+  display: block;
+  width: 200px;
+  height: 200px;
+}
+
+.desc {
+  margin-top: 8px;
+
+  a {
+    color: #1890ff;
+  }
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+}
+
+.name {
+  font-weight: 500;
+  margin-top: 8px;
+  font-size: 18px;
+}
+
+.confirm-tip {
+  margin-top: 16px;
+  font-size: 14px;
+  color: #3e3e3e;
 }

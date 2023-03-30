@@ -8,3 +8,10 @@ export interface Unikey {
   code: number;
   unikey: string;
 }
+
+export interface LoginStatus {
+  code: number;
+  message: string;
+  nikename?: string;
+  avatarUrl?: string;
+}
