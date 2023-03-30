@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^4.28.0",
+    "@tanstack/react-query-devtools": "^4.28.0",
     "@tauri-apps/api": "^1.2.0",
     "clsx": "^1.2.1",
     "qrcode": "^1.5.1",
