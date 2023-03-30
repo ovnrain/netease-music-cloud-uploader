@@ -14,7 +14,8 @@
     "allowlist": {
       "http": {
         "all": true,
-        "request": true
+        "request": true,
+        "scope": ["https://music.163.com/*"]
       },
       "shell": {
         "all": false,
