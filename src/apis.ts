@@ -1,7 +1,24 @@
 import { Body, ResponseType } from '@tauri-apps/api/http';
-import MD5 from 'spark-md5';
-import type { CheckResult, CloudList, LoginStatus, Unikey, UploadFile, UserInfo } from './models';
+import type {
+  UploadCheckResult,
+  CloudList,
+  LoginStatus,
+  Unikey,
+  UploadFile,
+  UserInfo,
+  UploadTokenResult,
+} from './models';
 import rq from './rq';
+
+export interface UploadCloudInfoData {
+  md5: string;
+  songid: string;
+  filename: string;
+  song: string;
+  album?: string;
+  artist?: string;
+  resourceId: string;
+}
 
 async function getUserInfo() {
   const response = await rq<UserInfo>(
@@ -55,8 +72,7 @@ async function getCloudList() {
 }
 
 async function uploadCheck(uploadFile: UploadFile) {
-  const md5 = MD5.ArrayBuffer.hash(await uploadFile.file.arrayBuffer());
-  const response = await rq<CheckResult>(
+  const response = await rq<UploadCheckResult>(
     'https://interface.music.163.com/api/cloud/upload/check',
     {
       method: 'POST',
@@ -65,9 +81,64 @@ async function uploadCheck(uploadFile: UploadFile) {
         ext: '',
         songId: '0',
         version: '1',
-        md5,
+        md5: uploadFile.md5,
         size: `${uploadFile.file.size}`,
       }),
+      responseType: ResponseType.JSON,
+    },
+    true
+  );
+  return response.data;
+}
+
+async function getUploadToken(uploadFile: UploadFile) {
+  const ext = uploadFile.file.name.split('.').pop() as string;
+  const fileName = uploadFile.file.name
+    .replace('.' + ext, '')
+    .replace(/\s/g, '')
+    .replace(/\./g, '_');
+  const response = await rq<UploadTokenResult>(
+    'https://music.163.com/api/nos/token/alloc',
+    {
+      method: 'POST',
+      body: Body.form({
+        bucket: '',
+        local: 'false',
+        nos_product: '3',
+        type: 'audio',
+        ext: ext.toUpperCase(),
+        filename: fileName,
+        md5: uploadFile.md5,
+      }),
+      responseType: ResponseType.JSON,
+    },
+    true
+  );
+  return response.data;
+}
+
+async function getUploadCloudInfo(data: UploadCloudInfoData) {
+  const response = await rq<{ code: number; songId: string }>(
+    'https://music.163.com/api/upload/cloud/info/v2',
+    {
+      method: 'POST',
+      body: Body.form({
+        bitrate: '999000',
+        ...data,
+      }),
+      responseType: ResponseType.JSON,
+    },
+    true
+  );
+  return response.data;
+}
+
+async function pubCloud(data: { songid: string }) {
+  const response = await rq<{ code: number }>(
+    'https://interface.music.163.com/api/cloud/pub/v2',
+    {
+      method: 'POST',
+      body: Body.form(data),
       responseType: ResponseType.JSON,
     },
     true
@@ -81,6 +152,9 @@ const APIS = {
   qrLogin,
   getCloudList,
   uploadCheck,
+  getUploadToken,
+  getUploadCloudInfo,
+  pubCloud,
 };
 
 export default APIS;

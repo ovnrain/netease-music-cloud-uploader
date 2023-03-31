@@ -41,12 +41,23 @@ export interface CloudList {
 export interface UploadFile {
   error?: Error;
   file: File;
+  md5: string;
   metadata?: ICommonTagsResult;
 }
 
-export interface CheckResult {
+export interface UploadCheckResult {
   code: number;
   // 如果是 false，说明云上已经有了，不需要再从本地上传了
   needUpload: boolean;
   songId: string;
+}
+
+export interface UploadTokenResult {
+  code: number;
+  message?: string;
+  result: {
+    objectKey: string;
+    resourceId: number;
+    token: string;
+  };
 }

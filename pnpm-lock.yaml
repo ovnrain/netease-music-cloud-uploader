@@ -16,6 +16,9 @@ dependencies:
   clsx:
     specifier: ^1.2.1
     version: 1.2.1
+  lodash.uniqby:
+    specifier: ^4.7.0
+    version: 4.7.0
   lodash.uniqwith:
     specifier: ^4.5.0
     version: 4.5.0
@@ -40,6 +43,9 @@ dependencies:
   spark-md5:
     specifier: ^3.0.2
     version: 3.0.2
+  uuid:
+    specifier: ^9.0.0
+    version: 9.0.0
 
 devDependencies:
   '@tanstack/eslint-plugin-query':
@@ -48,6 +54,9 @@ devDependencies:
   '@tauri-apps/cli':
     specifier: ^1.2.2
     version: 1.2.3
+  '@types/lodash.uniqby':
+    specifier: ^4.7.7
+    version: 4.7.7
   '@types/lodash.uniqwith':
     specifier: ^4.5.7
     version: 4.5.7
@@ -66,6 +75,9 @@ devDependencies:
   '@types/spark-md5':
     specifier: ^3.0.2
     version: 3.0.2
+  '@types/uuid':
+    specifier: ^9.0.1
+    version: 9.0.1
   '@typescript-eslint/eslint-plugin':
     specifier: ^5.57.0
     version: 5.57.0(@typescript-eslint/parser@5.57.0)(eslint@8.37.0)(typescript@4.9.5)
@@ -819,6 +831,12 @@ packages:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}
     dev: true
 
+  /@types/lodash.uniqby@4.7.7:
+    resolution: {integrity: sha512-sv2g6vkCIvEUsK5/Vq17haoZaisfj2EWW8mP7QWlnKi6dByoNmeuHDDXHR7sabuDqwO4gvU7ModIL22MmnOocg==}
+    dependencies:
+      '@types/lodash': 4.14.192
+    dev: true
+
   /@types/lodash.uniqwith@4.5.7:
     resolution: {integrity: sha512-qg55yHtu/t9S7J1dEcipoD7Oqr5lwVJxwIicRCJ8yabBNv6T9DpIxhWuVIAUdewxYeEl0mNKSnZHQXTw7Owmug==}
     dependencies:
@@ -867,6 +885,10 @@ packages:
 
   /@types/spark-md5@3.0.2:
     resolution: {integrity: sha512-82E/lVRaqelV9qmRzzJ1PKTpyrpnT7mwdneKNJB9hUtypZDMggloDfFUCIqRRx3lYRxteCwXSq9c+W71Vf0QnQ==}
+    dev: true
+
+  /@types/uuid@9.0.1:
+    resolution: {integrity: sha512-rFT3ak0/2trgvp4yYZo5iKFEPsET7vKydKF+VRCxlQ9bpheehyAJH89dAkaLEq/j/RZXJIqcgsmPJKUP1Z28HA==}
     dev: true
 
   /@typescript-eslint/eslint-plugin@5.57.0(@typescript-eslint/parser@5.57.0)(eslint@8.37.0)(typescript@4.9.5):
@@ -2359,6 +2381,10 @@ packages:
     resolution: {integrity: sha512-hXt6Ul/5yWjfklSGvLQl8vM//l3FtyHZeuelpzK6mm99pNvN9yTDruNZPEJZD1oWrqo+izBmB7oUfWgcCX7s4Q==}
     dev: true
 
+  /lodash.uniqby@4.7.0:
+    resolution: {integrity: sha512-e/zcLx6CSbmaEgFHCA7BnoQKyCtKMxnuWrJygbwPs/AIn+IMKl66L8/s+wBUn5LRw2pZx3bUHibiV1b6aTWIww==}
+    dev: false
+
   /lodash.uniqwith@4.5.0:
     resolution: {integrity: sha512-7lYL8bLopMoy4CTICbxygAUq6CdRJ36vFc80DucPueUee+d5NBRxz3FdT9Pes/HEx5mPoT9jwnsEJWz1N7uq7Q==}
     dev: false
@@ -3315,6 +3341,11 @@ packages:
 
   /util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
+    dev: false
+
+  /uuid@9.0.0:
+    resolution: {integrity: sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==}
+    hasBin: true
     dev: false
 
   /vite-plugin-checker@0.5.6(eslint@8.37.0)(typescript@4.9.5)(vite@4.2.1):
