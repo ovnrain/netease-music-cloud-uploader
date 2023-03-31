@@ -1,3 +1,5 @@
+import type { ICommonTagsResult } from 'music-metadata/lib/type';
+
 export interface UserInfo {
   code: number;
   account: { id: number } | null;
@@ -34,4 +36,17 @@ export interface CloudList {
   maxSize: string;
   size: string;
   upgradeSign: number;
+}
+
+export interface UploadFile {
+  error?: Error;
+  file: File;
+  metadata?: ICommonTagsResult;
+}
+
+export interface CheckResult {
+  code: number;
+  // 如果是 false，说明云上已经有了，不需要再从本地上传了
+  needUpload: boolean;
+  songId: string;
 }

@@ -15,7 +15,7 @@
       "http": {
         "all": true,
         "request": true,
-        "scope": ["https://music.163.com/*"]
+        "scope": ["https://music.163.com/*", "https://interface.music.163.com/*"]
       },
       "shell": {
         "all": false,
