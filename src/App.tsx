@@ -1,12 +1,8 @@
 // import styles from './App.module.scss';
-import UserInfoProvider from './providers/UserInfoProvider';
+import { Outlet } from 'react-router-dom';
 
 function App() {
-  return (
-    <UserInfoProvider>
-      <div>123</div>
-    </UserInfoProvider>
-  );
+  return <Outlet />;
 }
 
 export default App;
