@@ -8,6 +8,8 @@ import Root from './Root';
 import App from './App';
 import ErrorPage from './pages/ErrorPage';
 import LoginPage from './pages/LoginPage';
+import HomePage from './pages/HomePage';
+import UploadPage from './pages/UploadPage';
 
 const router = createBrowserRouter([
   {
@@ -16,8 +18,17 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        path: '/',
         element: <App />,
+        children: [
+          {
+            index: true,
+            element: <HomePage />,
+          },
+          {
+            path: 'upload',
+            element: <UploadPage />,
+          },
+        ],
       },
     ],
   },
