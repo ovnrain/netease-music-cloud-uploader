@@ -15,3 +15,23 @@ export interface LoginStatus {
   nickname?: string;
   avatarUrl?: string;
 }
+
+export interface CloudSong {
+  addTime: number;
+  album: string;
+  artist: string;
+  fileName: string;
+  fileSize: number;
+  songId: number;
+  songName: string;
+}
+
+export interface CloudList {
+  code: number;
+  count: number;
+  data: CloudSong[];
+  hasMore: boolean;
+  maxSize: string;
+  size: string;
+  upgradeSign: number;
+}

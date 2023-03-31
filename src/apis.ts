@@ -1,5 +1,5 @@
 import { Body, ResponseType } from '@tauri-apps/api/http';
-import type { LoginStatus, Unikey, UserInfo } from './models';
+import type { CloudList, LoginStatus, Unikey, UserInfo } from './models';
 import rq from './rq';
 
 async function getUserInfo() {
@@ -40,10 +40,24 @@ async function qrLogin(uniKey: string) {
   return response.data;
 }
 
+async function getCloudList() {
+  const response = await rq<CloudList>(
+    'https://music.163.com/api/v1/cloud/get',
+    {
+      method: 'POST',
+      body: Body.form({ limit: '1000', offset: '0' }),
+      responseType: ResponseType.JSON,
+    },
+    true
+  );
+  return response.data;
+}
+
 const APIS = {
   getUserInfo,
   getUniKey,
   qrLogin,
+  getCloudList,
 };
 
 export default APIS;
