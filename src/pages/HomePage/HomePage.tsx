@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import APIS from '../../apis';
 import PageLoading from '../../components/PageLoading';
+import CloudTable from '../../components/CloudTable';
 
 export interface HomePageProps {}
 
@@ -26,15 +27,7 @@ const HomePage = (props: HomePageProps) => {
         <Link to="/upload">上传</Link>
       </div>
       <div className={styles.list}>
-        {cloudList.data.map((song) => {
-          return (
-            <div key={song.songId} className={styles.item}>
-              <div className={styles.name}>{song.songName}</div>
-              <div className={styles.artist}>{song.artist}</div>
-              <div className={styles.album}>{song.album}</div>
-            </div>
-          );
-        })}
+        <CloudTable list={cloudList} />
       </div>
     </div>
   );

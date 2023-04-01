@@ -18,7 +18,9 @@
     "@tanstack/react-query-devtools": "^4.28.0",
     "@tauri-apps/api": "^1.2.0",
     "buffer": "^6.0.3",
+    "bytes": "^3.1.2",
     "clsx": "^1.2.1",
+    "date-fns": "^2.29.3",
     "lodash.uniqby": "^4.7.0",
     "lodash.uniqwith": "^4.5.0",
     "music-metadata": "^8.1.4",
@@ -33,6 +35,7 @@
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^4.27.0",
     "@tauri-apps/cli": "^1.2.2",
+    "@types/bytes": "^3.1.1",
     "@types/lodash.uniqby": "^4.7.7",
     "@types/lodash.uniqwith": "^4.5.7",
     "@types/node": "^18.15.11",
