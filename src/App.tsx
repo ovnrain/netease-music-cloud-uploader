@@ -21,8 +21,8 @@ function App() {
           <Route path="/upload" element={<Button icon="ne-back" to="/" />} />
         </Routes>
         <div className={styles.userInfo}>
-          <div className={styles.nickname}>{userInfo?.profile?.nickname}</div>
-          <img className={styles.avatar} src={userInfo?.profile?.avatarUrl} alt="avatar" />
+          <div className={styles.nickname}>{userInfo.profile.nickname}</div>
+          <img className={styles.avatar} src={userInfo.profile.avatarUrl} alt="avatar" />
         </div>
       </div>
       <div className={styles.content}>

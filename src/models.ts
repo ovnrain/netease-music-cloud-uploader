@@ -2,8 +2,8 @@ import type { ICommonTagsResult } from 'music-metadata/lib/type';
 
 export interface UserInfo {
   code: number;
-  account: { id: number } | null;
-  profile: { avatarUrl: string; nickname: string } | null;
+  account: { id: number };
+  profile: { avatarUrl: string; nickname: string };
 }
 
 export interface Unikey {
