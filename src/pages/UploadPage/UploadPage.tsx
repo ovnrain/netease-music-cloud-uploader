@@ -7,7 +7,6 @@ import MD5 from 'spark-md5';
 import { useMutation } from '@tanstack/react-query';
 import { v4 as uuidv4 } from 'uuid';
 import produce from 'immer';
-import { confirm } from '@tauri-apps/api/dialog';
 import bytes from 'bytes';
 import type { UploadFile } from '../../models';
 import APIS from '../../apis';
@@ -15,6 +14,7 @@ import Button from '../../components/Button';
 import clsx from 'clsx';
 import Table from '../../components/Table';
 import IconFont from '../../components/IconFont';
+import ConfirmModal from '../../components/ConfirmModal';
 
 export interface UploadPageProps {}
 
@@ -169,33 +169,27 @@ const UploadPage = (props: UploadPageProps) => {
                 dataIndex: 'action',
                 width: 80,
                 render: (_, record) => {
+                  const songName = record.metadata?.title || record.file.name;
                   return (
                     <Fragment>
                       <IconFont className={styles.edit} type="ne-edit" title="修正信息" />
-                      <IconFont
-                        className={styles.delete}
-                        type="ne-delete"
-                        title="从列表移除"
-                        onClick={async () => {
-                          const confirmed = await confirm(
-                            `确定要删除歌曲 《${record.metadata?.title || record.file.name}》 吗？`,
-                            {
-                              title: '删除确认',
-                              type: 'warning',
-                            }
+                      <ConfirmModal
+                        title="删除确认"
+                        content={`确定要删除歌曲 《${songName}》 吗？`}
+                        onConfirm={() => {
+                          setUploadFiles(
+                            produce((draft) => {
+                              const index = draft.findIndex((file) => file.md5 === record.md5);
+                              if (index !== -1) {
+                                draft.splice(index, 1);
+                              }
+                            })
                           );
-                          if (confirmed) {
-                            setUploadFiles(
-                              produce((draft) => {
-                                const index = draft.findIndex((file) => file.md5 === record.md5);
-                                if (index !== -1) {
-                                  draft.splice(index, 1);
-                                }
-                              })
-                            );
-                          }
                         }}
-                      />
+                        placement="left"
+                      >
+                        <IconFont className={styles.delete} type="ne-delete" title="从列表移除" />
+                      </ConfirmModal>
                     </Fragment>
                   );
                 },

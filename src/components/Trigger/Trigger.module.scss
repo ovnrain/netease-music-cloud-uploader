@@ -1,0 +1,17 @@
+.trigger {
+  &.pointer {
+    cursor: pointer;
+  }
+
+  &.no-select {
+    user-select: none;
+  }
+
+  &.disabled {
+    cursor: not-allowed;
+  }
+}
+
+.hide {
+  visibility: hidden;
+}
