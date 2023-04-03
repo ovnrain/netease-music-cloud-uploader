@@ -18,6 +18,19 @@ export interface LoginStatus {
   avatarUrl?: string;
 }
 
+export interface SimpleSong {
+  name: string;
+  // 歌手
+  ar?: {
+    name?: string;
+  }[];
+  // 专辑
+  al?: {
+    name?: string;
+    picUrl: string;
+  };
+}
+
 export interface CloudSong {
   addTime: number;
   album: string;
@@ -26,6 +39,7 @@ export interface CloudSong {
   fileSize: number;
   songId: number;
   songName: string;
+  simpleSong: SimpleSong;
 }
 
 export interface CloudList {

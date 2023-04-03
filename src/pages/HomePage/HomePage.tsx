@@ -60,14 +60,24 @@ const HomePage = (props: HomePageProps) => {
           {
             title: '音乐标题',
             dataIndex: 'songName',
+            render: (_, record) => record.simpleSong.name || record.songName,
           },
           {
             title: '歌手',
             dataIndex: 'artist',
+            render: (_, record) => record.simpleSong.ar?.[0].name || record.artist,
           },
           {
             title: '专辑',
             dataIndex: 'album',
+            render: (_, record) => {
+              return (
+                <div className={styles.album}>
+                  <img className={styles.albumImg} src={record.simpleSong.al?.picUrl} alt="" />
+                  {record.simpleSong.al?.name || record.album}
+                </div>
+              );
+            },
           },
           {
             title: '大小',
