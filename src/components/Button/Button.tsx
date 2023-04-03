@@ -10,16 +10,29 @@ export interface ButtonProps {
   children?: ReactNode;
   className?: string;
   disabled?: boolean;
+  size?: 'small' | 'medium' | 'large';
+  type?: 'primary' | 'secondary';
   onClick?: () => void;
 }
 
 const Button = (props: ButtonProps) => {
-  const { to, icon, children, className, disabled, onClick } = props;
+  const {
+    to,
+    icon,
+    children,
+    className,
+    disabled,
+    size = 'medium',
+    type = 'primary',
+    onClick,
+  } = props;
 
   if (to) {
     return (
       <Link
-        className={clsx(styles.button, className, { [styles.disabled]: disabled })}
+        className={clsx(styles.button, styles[size], styles[type], className, {
+          [styles.disabled]: disabled,
+        })}
         to={to}
         onClick={(e) => {
           if (disabled) {
@@ -37,7 +50,9 @@ const Button = (props: ButtonProps) => {
 
   return (
     <button
-      className={clsx(styles.button, className, { [styles.disabled]: disabled })}
+      className={clsx(styles.button, styles[size], styles[type], className, {
+        [styles.disabled]: disabled,
+      })}
       onClick={onClick}
       disabled={disabled}
     >

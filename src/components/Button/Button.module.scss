@@ -10,8 +10,23 @@
   background: linear-gradient(to right, #e75f4e, #c2463a);
   cursor: pointer;
 
+  &.small {
+    height: 24px;
+    font-size: 12px;
+    padding: 0 12px;
+  }
+
+  &.secondary {
+    background: linear-gradient(to right, #f5f5f5, #e8e8e8);
+    color: rgba(0, 0, 0, 0.65);
+  }
+
   &:hover {
     background: linear-gradient(to right, #d25647, #b84539);
+  }
+
+  &.secondary:hover {
+    background: linear-gradient(to right, #e8e8e8, #d9d9d9);
   }
 
   &.disabled {
