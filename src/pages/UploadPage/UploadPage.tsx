@@ -75,6 +75,7 @@ const UploadPage = (props: UploadPageProps) => {
     for (let index = 0; index < validFiles.length; index++) {
       const file = validFiles[index];
       const md5 = MD5.ArrayBuffer.hash(await file.arrayBuffer());
+      const ext = (file.name.split('.').pop() as string).toUpperCase();
 
       try {
         const buffer = await file.arrayBuffer();
@@ -84,6 +85,7 @@ const UploadPage = (props: UploadPageProps) => {
           file,
           md5,
           metadata,
+          ext,
           status: 'pending',
         });
       } catch (e) {
@@ -93,6 +95,7 @@ const UploadPage = (props: UploadPageProps) => {
           error,
           file,
           md5,
+          ext,
           status: 'error',
         });
       }
@@ -132,6 +135,10 @@ const UploadPage = (props: UploadPageProps) => {
                 title: '专辑',
                 dataIndex: 'album',
                 render: (_, record) => record.metadata?.album,
+              },
+              {
+                title: '格式',
+                dataIndex: 'ext',
               },
               {
                 title: '大小',

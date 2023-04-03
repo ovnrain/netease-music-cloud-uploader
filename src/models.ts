@@ -57,6 +57,7 @@ export interface UploadFile {
   file: File;
   md5: string;
   metadata?: ICommonTagsResult;
+  ext: string;
   status?: 'pending' | 'uploading' | 'uploaded' | 'error';
 }
 
