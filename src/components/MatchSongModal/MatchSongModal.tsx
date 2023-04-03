@@ -35,6 +35,8 @@ const MatchSongModal = (props: MatchSongModalProps) => {
           {!!matchError && <div className={styles.error}>{matchError}</div>}
           <div className={styles.matchTip}>
             如: 108281 或 https://music.163.com/#/song?id=108281
+            <br />
+            如想取消修正，请输入 0
           </div>
         </div>
       }
