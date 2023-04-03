@@ -8,6 +8,12 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
+
+  &.disabled,
+  &.disabled:hover {
+    color: #bfbfbf;
+    cursor: not-allowed;
+  }
 }
 
 .svg {
