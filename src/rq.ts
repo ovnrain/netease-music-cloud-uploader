@@ -1,7 +1,12 @@
 import { fetch, FetchOptions } from '@tauri-apps/api/http';
 
-export default function rq<T>(url: string, options?: FetchOptions, useCookie = true) {
+export interface RqOptions {
+  useCookie?: boolean;
+}
+
+export default function rq<T>(url: string, options?: FetchOptions, rqOptions?: RqOptions) {
   const cookie = import.meta.env.VITE_API_COOKIE;
+  const useCookie = rqOptions?.useCookie ?? true;
 
   const fetchOptions: FetchOptions | undefined = useCookie
     ? options
