@@ -157,6 +157,11 @@ async function deleteCloud(data: { songIds: number[] }) {
     },
     true
   );
+
+  if (response.data.code !== 200) {
+    throw new Error(response.data.msg || '删除失败');
+  }
+
   return response.data;
 }
 

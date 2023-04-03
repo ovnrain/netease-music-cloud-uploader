@@ -2,6 +2,7 @@ import styles from './HomePage.module.scss';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import format from 'date-fns/format';
 import bytes from 'bytes';
+import toast from 'react-hot-toast';
 import APIS from '../../apis';
 import PageLoading from '../../components/PageLoading';
 import Table from '../../components/Table';
@@ -88,7 +89,17 @@ const HomePage = (props: HomePageProps) => {
                     content={`确定要从网盘删除歌曲 《${record.songName}》 吗？`}
                     placement="left"
                     onConfirm={() => {
-                      deleteCloud.mutate({ songIds: [record.songId] });
+                      toast.promise(
+                        deleteCloud.mutateAsync({ songIds: [record.songId] }),
+                        {
+                          loading: '正在删除...',
+                          success: '删除成功',
+                          error: (err) => (err instanceof Error ? err.message : '删除失败'),
+                        },
+                        {
+                          id: `delete-cloud-${record.songId}`,
+                        }
+                      );
                     }}
                   >
                     <IconFont className={styles.delete} type="ne-delete" title="删除" />
