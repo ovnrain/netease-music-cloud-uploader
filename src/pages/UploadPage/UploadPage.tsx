@@ -58,11 +58,11 @@ const UploadPage = (props: UploadPageProps) => {
 
   const onSelectChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
+    setInputKey(uuidv4());
 
     const uploadFiles: UploadFile[] = [];
 
     if (!files) {
-      setInputKey(uuidv4());
       return;
     }
 
@@ -79,7 +79,6 @@ const UploadPage = (props: UploadPageProps) => {
     }
 
     if (!validFiles.length) {
-      setInputKey(uuidv4());
       return;
     }
 
@@ -113,7 +112,6 @@ const UploadPage = (props: UploadPageProps) => {
     }
 
     setUploadFiles((prevFiles) => uniqBy([...prevFiles, ...uploadFiles], 'md5'));
-    setInputKey(uuidv4());
   };
 
   return (
