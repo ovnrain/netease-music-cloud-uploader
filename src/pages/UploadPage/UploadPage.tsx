@@ -15,6 +15,7 @@ import clsx from 'clsx';
 import Table from '../../components/Table';
 import IconFont from '../../components/IconFont';
 import ConfirmModal from '../../components/ConfirmModal';
+import EditFileModal from '../../components/EditFileModal';
 
 export interface UploadPageProps {}
 
@@ -179,7 +180,28 @@ const UploadPage = (props: UploadPageProps) => {
                   const songName = record.metadata?.title || record.file.name;
                   return (
                     <Fragment>
-                      <IconFont className={styles.edit} type="ne-edit" title="修正信息" />
+                      <EditFileModal
+                        songName={songName}
+                        defaultValue={{
+                          title: songName,
+                          artist: record.metadata?.artist,
+                          album: record.metadata?.album,
+                        }}
+                        onSubmit={(data) => {
+                          setUploadFiles(
+                            produce((draft) => {
+                              const target = draft.find((file) => file.md5 === record.md5);
+                              if (target?.metadata) {
+                                target.metadata.title = data.title;
+                                target.metadata.artist = data.artist;
+                                target.metadata.album = data.album;
+                              }
+                            })
+                          );
+                        }}
+                      >
+                        <IconFont className={styles.edit} type="ne-edit" title="编辑信息" />
+                      </EditFileModal>
                       <ConfirmModal
                         title="删除确认"
                         content={`确定要删除歌曲 《${songName}》 吗？`}

@@ -1,0 +1,21 @@
+.form {
+  padding-top: 8px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+
+  &:not(:last-child) {
+    margin-bottom: 8px;
+  }
+}
+
+.label {
+  width: 72px;
+  text-align: right;
+}
+
+.input {
+  margin: 0;
+}
