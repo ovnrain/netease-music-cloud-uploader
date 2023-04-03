@@ -43,6 +43,7 @@ export interface UploadFile {
   file: File;
   md5: string;
   metadata?: ICommonTagsResult;
+  status?: 'pending' | 'uploading' | 'uploaded' | 'error';
 }
 
 export interface UploadCheckResult {

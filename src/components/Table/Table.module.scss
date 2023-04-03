@@ -1,0 +1,37 @@
+.table {
+  border: none;
+  border-collapse: collapse;
+  width: 100%;
+
+  th,
+  td {
+    padding: 12px;
+    box-sizing: border-box;
+
+    &:first-child {
+      padding-left: 16px;
+    }
+
+    &:last-child {
+      padding-right: 16px;
+    }
+  }
+
+  thead tr {
+    text-align: left;
+
+    th {
+      font-weight: bold;
+    }
+  }
+
+  tbody tr {
+    &:nth-of-type(odd) {
+      background-color: #f8f8f8;
+    }
+
+    &:hover {
+      background-color: #f0f0f1;
+    }
+  }
+}

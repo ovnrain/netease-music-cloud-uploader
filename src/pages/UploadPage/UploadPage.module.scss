@@ -1,0 +1,50 @@
+.container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.table-wrapper {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.select-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+
+  &.has-songs {
+    padding: 16px 0;
+    flex: none;
+    border-top: 1px solid #ededed;
+
+    .select-button {
+      margin-right: 16px;
+    }
+  }
+}
+
+.error {
+  color: #ff4d4f;
+}
+
+.success {
+  color: #52c41a;
+}
+
+.edit,
+.delete {
+  font-size: 16px;
+  cursor: pointer;
+
+  &:hover {
+    color: #c2463a;
+  }
+}
+
+.edit {
+  margin-right: 12px;
+}

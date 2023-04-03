@@ -1,3 +1,8 @@
+.container {
+  flex: 1;
+  overflow-y: auto;
+}
+
 .empty {
   display: flex;
   align-items: center;
@@ -5,16 +10,16 @@
   height: 200px;
 }
 
-.container {
-  margin-top: 16px;
+.edit,
+.delete {
+  font-size: 16px;
+  cursor: pointer;
+
+  &:hover {
+    color: #c2463a;
+  }
 }
 
-.list {
-  margin-top: 16px;
-}
-
-.item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.edit {
+  margin-right: 12px;
 }

@@ -1,0 +1,28 @@
+.button {
+  color: #ffffff;
+  height: 32px;
+  border-radius: 16px;
+  font-size: 14px;
+  display: inline-flex;
+  padding: 0 16px;
+  align-items: center;
+  border: none;
+  background: linear-gradient(to right, #e75f4e, #c2463a);
+  cursor: pointer;
+
+  &:hover {
+    background: linear-gradient(to right, #d25647, #b84539);
+  }
+
+  &.disabled {
+    color: rgba(0, 0, 0, 0.25);
+    background: rgba(0, 0, 0, 0.04);
+    cursor: not-allowed;
+  }
+}
+
+.icon {
+  &:not(.no-children) {
+    margin-right: 4px;
+  }
+}

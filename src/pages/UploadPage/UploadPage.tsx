@@ -1,14 +1,20 @@
-// import styles from './UploadPage.module.scss';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import styles from './UploadPage.module.scss';
+import { Fragment, useRef, useState } from 'react';
 import { parseBuffer } from 'music-metadata-browser';
 import { Buffer } from 'buffer';
 import uniqBy from 'lodash.uniqby';
 import MD5 from 'spark-md5';
 import { useMutation } from '@tanstack/react-query';
 import { v4 as uuidv4 } from 'uuid';
+import produce from 'immer';
+import { confirm } from '@tauri-apps/api/dialog';
+import bytes from 'bytes';
 import type { UploadFile } from '../../models';
 import APIS from '../../apis';
+import Button from '../../components/Button';
+import clsx from 'clsx';
+import Table from '../../components/Table';
+import IconFont from '../../components/IconFont';
 
 export interface UploadPageProps {}
 
@@ -17,6 +23,10 @@ const audioTypes = ['mp3', 'flac', 'ape', 'wma', 'wav', 'ogg', 'aac'];
 const UploadPage = (props: UploadPageProps) => {
   const [uploadFiles, setUploadFiles] = useState<UploadFile[]>([]);
   const [inputKey, setInputKey] = useState(uuidv4());
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isUploading, setIsUploading] = useState(false);
+
+  const pendingUploadFiles = uploadFiles.filter((file) => file.status === 'pending');
 
   const upload = useMutation({
     mutationFn: async (uploadFile: UploadFile) => {
@@ -42,12 +52,6 @@ const UploadPage = (props: UploadPageProps) => {
       });
       return await APIS.pubCloud({ songid: cloudInfo.songId });
     },
-    /* onError: (error, uploadFile) => {
-      console.log(error, uploadFile);
-    },
-    onSuccess: (data) => {
-      console.log(data);
-    }, */
   });
 
   const onSelectChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,6 +84,7 @@ const UploadPage = (props: UploadPageProps) => {
           file,
           md5,
           metadata,
+          status: 'pending',
         });
       } catch (e) {
         const error = e instanceof Error ? e : new Error('未知错误');
@@ -88,6 +93,7 @@ const UploadPage = (props: UploadPageProps) => {
           error,
           file,
           md5,
+          status: 'error',
         });
       }
     }
@@ -97,34 +103,183 @@ const UploadPage = (props: UploadPageProps) => {
   };
 
   return (
-    <div>
-      <div>
+    <div className={styles.container}>
+      {uploadFiles.length > 0 && (
+        <div className={styles.tableWrapper}>
+          <Table
+            dataSource={uploadFiles}
+            columns={[
+              {
+                title: '',
+                dataIndex: 'index',
+                width: 40,
+                render: (_, record) => {
+                  const index = uploadFiles.findIndex((item) => item.md5 === record.md5) + 1;
+                  return index < 10 ? `0${index}` : index;
+                },
+              },
+              {
+                title: '音乐标题',
+                dataIndex: 'title',
+                render: (_, record) => record.metadata?.title || record.file.name,
+              },
+              {
+                title: '歌手',
+                dataIndex: 'artist',
+                render: (_, record) => record.metadata?.artist,
+              },
+              {
+                title: '专辑',
+                dataIndex: 'album',
+                render: (_, record) => record.metadata?.album,
+              },
+              {
+                title: '大小',
+                dataIndex: 'size',
+                render: (_, record) =>
+                  bytes.format(record.file.size, {
+                    decimalPlaces: 1,
+                    fixedDecimals: true,
+                    unit: 'MB',
+                  }),
+              },
+              {
+                title: '状态',
+                dataIndex: 'status',
+                render: (_, record) => {
+                  if (record.status === 'error' || record.error) {
+                    return (
+                      <span className={styles.error}>{record.error?.message || '未知错误'}</span>
+                    );
+                  }
+                  if (record.status === 'pending') {
+                    return '等待上传';
+                  }
+                  if (record.status === 'uploading') {
+                    return '上传中...';
+                  }
+                  if (record.status === 'uploaded') {
+                    return <span className={styles.success}>上传成功</span>;
+                  }
+                  return '未知状态';
+                },
+              },
+              {
+                title: '操作',
+                dataIndex: 'action',
+                width: 80,
+                render: (_, record) => {
+                  return (
+                    <Fragment>
+                      <IconFont className={styles.edit} type="ne-edit" title="修正信息" />
+                      <IconFont
+                        className={styles.delete}
+                        type="ne-delete"
+                        title="从列表移除"
+                        onClick={async () => {
+                          const confirmed = await confirm(
+                            `确定要删除歌曲 《${record.metadata?.title || record.file.name}》 吗？`,
+                            {
+                              title: '删除确认',
+                              type: 'warning',
+                            }
+                          );
+                          if (confirmed) {
+                            setUploadFiles(
+                              produce((draft) => {
+                                const index = draft.findIndex((file) => file.md5 === record.md5);
+                                if (index !== -1) {
+                                  draft.splice(index, 1);
+                                }
+                              })
+                            );
+                          }
+                        }}
+                      />
+                    </Fragment>
+                  );
+                },
+              },
+            ]}
+            rowKey="md5"
+          />
+        </div>
+      )}
+      <div className={clsx(styles.selectWrapper, { [styles.hasSongs]: uploadFiles.length > 0 })}>
         <input
           key={inputKey}
           type="file"
           accept={audioTypes.map((t) => `.${t}`).join(',')}
           onChange={onSelectChange}
+          ref={fileInputRef}
           multiple
+          hidden
         />
-      </div>
-      <div>
-        {uploadFiles.map(({ md5, file, metadata, error }) => (
-          <div key={md5}>
-            {file.name} - {metadata?.artist} - {metadata?.album} - {error?.message}
-          </div>
-        ))}
-      </div>
-      <div>
-        <button
+        <Button
+          className={styles.selectButton}
           onClick={() => {
-            upload.mutate(uploadFiles[0]);
+            fileInputRef.current?.click();
           }}
+          icon="ne-add"
         >
-          上传
-        </button>
-      </div>
-      <div>
-        <Link to="/">返回列表</Link>
+          {uploadFiles.length > 0 ? '继续添加' : '选择音乐文件'}
+        </Button>
+        {uploadFiles.length > 0 && (
+          <Button
+            onClick={async () => {
+              if (!pendingUploadFiles.length) {
+                return;
+              }
+
+              setIsUploading(true);
+
+              for (let index = 0; index < pendingUploadFiles.length; index++) {
+                const file = pendingUploadFiles[index];
+                setUploadFiles(
+                  produce((draft) => {
+                    const target = draft.find((f) => f.md5 === file.md5);
+                    if (target) {
+                      target.status = 'uploading';
+                    }
+                  })
+                );
+                try {
+                  await upload.mutateAsync(file, {
+                    onError: (error) => {
+                      setUploadFiles(
+                        produce((draft) => {
+                          const target = draft.find((f) => f.md5 === file.md5);
+                          if (target) {
+                            target.status = 'error';
+                            target.error = error instanceof Error ? error : new Error('未知错误');
+                          }
+                        })
+                      );
+                    },
+                    onSuccess: () => {
+                      setUploadFiles(
+                        produce((draft) => {
+                          const target = draft.find((f) => f.md5 === file.md5);
+                          if (target) {
+                            target.status = 'uploaded';
+                          }
+                        })
+                      );
+                    },
+                  });
+                } catch (e) {
+                  //
+                }
+              }
+
+              setIsUploading(false);
+            }}
+            icon="ne-upload"
+            disabled={isUploading || pendingUploadFiles.length === 0}
+          >
+            上传全部
+          </Button>
+        )}
       </div>
     </div>
   );
