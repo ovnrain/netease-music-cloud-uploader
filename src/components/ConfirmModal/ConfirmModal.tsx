@@ -2,6 +2,7 @@ import styles from './ConfirmModal.module.scss';
 import { Fragment, ReactNode, useState } from 'react';
 import clsx from 'clsx';
 import Trigger, { type TriggerProps } from '../Trigger';
+import Button from '../Button';
 
 export interface ConfirmModalProps
   extends Pick<TriggerProps, 'children' | 'popupClassName' | 'placement' | 'popupStyle'> {
@@ -36,17 +37,19 @@ const ConfirmModal = (props: ConfirmModalProps) => {
           <div className={styles.title}>{title ?? '确认'}</div>
           <div className={styles.content}>{content}</div>
           <div className={styles.buttons}>
-            <button
+            <Button
               className={styles.button}
               onClick={() => {
                 setOpen(false);
                 onCancel?.();
               }}
               disabled={isLoading}
+              size="small"
+              type="secondary"
             >
               {cancelButtonText ?? '取消'}
-            </button>
-            <button
+            </Button>
+            <Button
               className={styles.button}
               onClick={async () => {
                 setIsLoading(true);
@@ -57,9 +60,10 @@ const ConfirmModal = (props: ConfirmModalProps) => {
                 }
               }}
               disabled={isLoading}
+              size="small"
             >
               {confirmButtonText ?? '确认'}
-            </button>
+            </Button>
           </div>
         </Fragment>
       }

@@ -1,11 +1,12 @@
 .popup {
-  border: 1px solid #e9e9e9;
   background-color: #ffffff;
-  padding: 8px;
-  border-radius: 4px;
+  padding: 12px;
+  border-radius: 8px;
   min-width: 120px;
-  max-width: 300px;
+  max-width: 400px;
   font-size: 14px;
+  box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12),
+    0 9px 28px 8px rgba(0, 0, 0, 0.05);
 }
 
 .title {
@@ -14,13 +15,11 @@
 }
 
 .buttons {
-  margin-top: 8px;
+  margin-top: 16px;
   display: flex;
   justify-content: flex-end;
 }
 
 .button {
   margin-left: 8px;
-  width: 60px;
-  height: 24px;
 }
