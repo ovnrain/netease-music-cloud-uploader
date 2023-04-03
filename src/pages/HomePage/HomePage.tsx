@@ -101,10 +101,11 @@ const HomePage = (props: HomePageProps) => {
             dataIndex: 'action',
             width: 80,
             render: (_, record) => {
+              const songName = record.simpleSong.name || record.songName;
               return (
                 <Fragment>
                   <MatchSongModal
-                    songName={record.songName}
+                    songName={songName}
                     onSubmit={(songId) => {
                       toast.promise(
                         matchSong.mutateAsync({
@@ -127,7 +128,7 @@ const HomePage = (props: HomePageProps) => {
                   </MatchSongModal>
                   <ConfirmModal
                     title="删除确认"
-                    content={`确定要从网盘删除歌曲 《${record.songName}》 吗？`}
+                    content={`确定要从网盘删除歌曲 《${songName}》 吗？`}
                     placement="left"
                     onConfirm={() => {
                       toast.promise(
