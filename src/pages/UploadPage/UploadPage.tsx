@@ -8,6 +8,7 @@ import { useMutation } from '@tanstack/react-query';
 import { v4 as uuidv4 } from 'uuid';
 import produce from 'immer';
 import bytes from 'bytes';
+import toast from 'react-hot-toast';
 import type { UploadFile } from '../../models';
 import APIS from '../../apis';
 import Button from '../../components/Button';
@@ -61,6 +62,7 @@ const UploadPage = (props: UploadPageProps) => {
     const uploadFiles: UploadFile[] = [];
 
     if (!files) {
+      setInputKey(uuidv4());
       return;
     }
 
@@ -69,7 +71,15 @@ const UploadPage = (props: UploadPageProps) => {
       return file.type.startsWith('audio/') && ext && audioTypes.includes(ext);
     });
 
+    if (files.length !== validFiles.length) {
+      toast(`已过滤 ${files.length - validFiles.length} 个不符合格式的文件`, {
+        duration: 1800,
+        icon: <IconFont className={styles.warn} type="ne-warn" />,
+      });
+    }
+
     if (!validFiles.length) {
+      setInputKey(uuidv4());
       return;
     }
 
