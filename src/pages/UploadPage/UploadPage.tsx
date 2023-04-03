@@ -22,6 +22,8 @@ export interface UploadPageProps {}
 
 const audioTypes = ['mp3', 'flac', 'ape', 'wma', 'wav', 'ogg', 'aac'];
 
+const MAX_SELECT_FILES = 30;
+
 const UploadPage = (props: UploadPageProps) => {
   const [uploadFiles, setUploadFiles] = useState<UploadFile[]>([]);
   const [inputKey, setInputKey] = useState(uuidv4());
@@ -29,6 +31,7 @@ const UploadPage = (props: UploadPageProps) => {
   const [isUploading, setIsUploading] = useState(false);
 
   const pendingUploadFiles = uploadFiles.filter((file) => file.status === 'pending');
+  const unfinishedUploadFiles = uploadFiles.filter((file) => file.status !== 'uploaded');
 
   const upload = useMutation({
     mutationFn: async (uploadFile: UploadFile) => {
@@ -57,7 +60,7 @@ const UploadPage = (props: UploadPageProps) => {
   });
 
   const onSelectChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
+    let files = Array.from(e.target.files || []);
     setInputKey(uuidv4());
 
     const uploadFiles: UploadFile[] = [];
@@ -66,7 +69,15 @@ const UploadPage = (props: UploadPageProps) => {
       return;
     }
 
-    const validFiles = Array.from(files).filter((file) => {
+    if (pendingUploadFiles.length + files.length > MAX_SELECT_FILES) {
+      toast(`最多同时上传 ${MAX_SELECT_FILES} 个文件`, {
+        duration: 1800,
+        icon: <IconFont className={styles.warn} type="ne-warn" />,
+      });
+      files = files.slice(0, MAX_SELECT_FILES - pendingUploadFiles.length);
+    }
+
+    const validFiles = files.filter((file) => {
       const ext = file.name.split('.').pop();
       return file.type.startsWith('audio/') && ext && audioTypes.includes(ext);
     });
@@ -116,17 +127,18 @@ const UploadPage = (props: UploadPageProps) => {
 
   return (
     <div className={styles.container}>
-      {uploadFiles.length > 0 && (
+      {unfinishedUploadFiles.length > 0 && (
         <div className={styles.tableWrapper}>
           <Table
-            dataSource={uploadFiles}
+            dataSource={unfinishedUploadFiles}
             columns={[
               {
                 title: '',
                 dataIndex: 'index',
                 width: 40,
                 render: (_, record) => {
-                  const index = uploadFiles.findIndex((item) => item.md5 === record.md5) + 1;
+                  const index =
+                    unfinishedUploadFiles.findIndex((item) => item.md5 === record.md5) + 1;
                   return index < 10 ? `0${index}` : index;
                 },
               },
@@ -208,7 +220,12 @@ const UploadPage = (props: UploadPageProps) => {
                           );
                         }}
                       >
-                        <IconFont className={styles.edit} type="ne-edit" title="编辑信息" />
+                        <IconFont
+                          className={styles.edit}
+                          type="ne-edit"
+                          title="编辑信息"
+                          disabled={isUploading || record.status !== 'pending'}
+                        />
                       </EditFileModal>
                       <ConfirmModal
                         title="删除确认"
@@ -225,7 +242,12 @@ const UploadPage = (props: UploadPageProps) => {
                         }}
                         placement="left"
                       >
-                        <IconFont className={styles.delete} type="ne-delete" title="从列表移除" />
+                        <IconFont
+                          className={styles.delete}
+                          type="ne-delete"
+                          title="从列表移除"
+                          disabled={isUploading}
+                        />
                       </ConfirmModal>
                     </Fragment>
                   );
@@ -236,7 +258,11 @@ const UploadPage = (props: UploadPageProps) => {
           />
         </div>
       )}
-      <div className={clsx(styles.selectWrapper, { [styles.hasSongs]: uploadFiles.length > 0 })}>
+      <div
+        className={clsx(styles.selectWrapper, {
+          [styles.hasSongs]: unfinishedUploadFiles.length > 0,
+        })}
+      >
         <input
           key={inputKey}
           type="file"
@@ -252,16 +278,14 @@ const UploadPage = (props: UploadPageProps) => {
             fileInputRef.current?.click();
           }}
           icon="ne-add"
+          disabled={isUploading || pendingUploadFiles.length >= MAX_SELECT_FILES}
         >
-          {uploadFiles.length > 0 ? '继续添加' : '选择音乐文件'}
+          {unfinishedUploadFiles.length > 0 ? '继续添加' : '选择音乐文件'}
         </Button>
-        {uploadFiles.length > 0 && (
+        {pendingUploadFiles.length > 0 && (
           <Button
+            className={styles.uploadButton}
             onClick={async () => {
-              if (!pendingUploadFiles.length) {
-                return;
-              }
-
               setIsUploading(true);
 
               for (let index = 0; index < pendingUploadFiles.length; index++) {
@@ -306,7 +330,7 @@ const UploadPage = (props: UploadPageProps) => {
               setIsUploading(false);
             }}
             icon="ne-upload"
-            disabled={isUploading || pendingUploadFiles.length === 0}
+            disabled={isUploading}
           >
             上传全部
           </Button>
