@@ -37,7 +37,7 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "@tanstack/eslint-plugin-query": "^4.27.0",
+    "@tanstack/eslint-plugin-query": "^4.28.1",
     "@tauri-apps/cli": "^1.2.2",
     "@types/bytes": "^3.1.1",
     "@types/lodash.get": "^4.4.7",
@@ -45,7 +45,7 @@
     "@types/lodash.uniqwith": "^4.5.7",
     "@types/node": "^18.15.11",
     "@types/qrcode": "^1.5.0",
-    "@types/react": "^18.0.31",
+    "@types/react": "^18.0.32",
     "@types/react-dom": "^18.0.6",
     "@types/spark-md5": "^3.0.2",
     "@types/uuid": "^9.0.1",
