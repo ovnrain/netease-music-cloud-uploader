@@ -7,6 +7,7 @@ import type {
   UploadFile,
   UserInfo,
   UploadTokenResult,
+  DeleteCloudResult,
 } from './models';
 import rq from './rq';
 
@@ -146,6 +147,19 @@ async function pubCloud(data: { songid: string }) {
   return response.data;
 }
 
+async function deleteCloud(data: { songIds: number[] }) {
+  const response = await rq<DeleteCloudResult>(
+    'https://music.163.com/api/cloud/del',
+    {
+      method: 'POST',
+      body: Body.form({ songIds: JSON.stringify(data.songIds) }),
+      responseType: ResponseType.JSON,
+    },
+    true
+  );
+  return response.data;
+}
+
 const APIS = {
   getUserInfo,
   getUniKey,
@@ -155,6 +169,7 @@ const APIS = {
   getUploadToken,
   getUploadCloudInfo,
   pubCloud,
+  deleteCloud,
 };
 
 export default APIS;

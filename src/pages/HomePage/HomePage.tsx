@@ -1,5 +1,5 @@
 import styles from './HomePage.module.scss';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import format from 'date-fns/format';
 import bytes from 'bytes';
 import APIS from '../../apis';
@@ -12,9 +12,16 @@ import ConfirmModal from '../../components/ConfirmModal';
 export interface HomePageProps {}
 
 const HomePage = (props: HomePageProps) => {
+  const queryClient = useQueryClient();
   const { isLoading, data: cloudList } = useQuery({
     queryKey: ['cloudList'],
     queryFn: APIS.getCloudList,
+  });
+  const deleteCloud = useMutation({
+    mutationFn: APIS.deleteCloud,
+    onSettled: () => {
+      queryClient.invalidateQueries(['cloudList']);
+    },
   });
 
   if (isLoading) {
@@ -81,7 +88,7 @@ const HomePage = (props: HomePageProps) => {
                     content={`确定要从网盘删除歌曲 《${record.songName}》 吗？`}
                     placement="left"
                     onConfirm={() => {
-                      //
+                      deleteCloud.mutate({ songIds: [record.songId] });
                     }}
                   >
                     <IconFont className={styles.delete} type="ne-delete" title="删除" />

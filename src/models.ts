@@ -62,3 +62,10 @@ export interface UploadTokenResult {
     token: string;
   };
 }
+
+export interface DeleteCloudResult {
+  code: number;
+  succIds?: number[];
+  failIds?: number[];
+  msg?: string;
+}
