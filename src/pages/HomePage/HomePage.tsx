@@ -11,6 +11,7 @@ import IconFont from '../../components/IconFont';
 import ConfirmModal from '../../components/ConfirmModal';
 import MatchSongModal from '../../components/MatchSongModal';
 import useUserInfo from '../../hooks/useUserInfo';
+import { replaceHttpWithHttps } from '../../utils';
 
 export interface HomePageProps {}
 
@@ -73,7 +74,11 @@ const HomePage = (props: HomePageProps) => {
             render: (_, record) => {
               return (
                 <div className={styles.album}>
-                  <img className={styles.albumImg} src={record.simpleSong.al?.picUrl} alt="" />
+                  <img
+                    className={styles.albumImg}
+                    src={replaceHttpWithHttps(record.simpleSong.al?.picUrl)}
+                    alt={record.simpleSong.al?.name || record.album}
+                  />
                   {record.simpleSong.al?.name || record.album}
                 </div>
               );

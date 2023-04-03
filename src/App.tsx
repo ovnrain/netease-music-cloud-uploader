@@ -2,6 +2,7 @@ import styles from './App.module.scss';
 import { Outlet, Route, Routes } from 'react-router-dom';
 import useUserInfo from './hooks/useUserInfo';
 import Button from './components/Button';
+import { replaceHttpWithHttps } from './utils';
 
 function App() {
   const userInfo = useUserInfo();
@@ -22,7 +23,11 @@ function App() {
         </Routes>
         <div className={styles.userInfo}>
           <div className={styles.nickname}>{userInfo.profile.nickname}</div>
-          <img className={styles.avatar} src={userInfo.profile.avatarUrl} alt="avatar" />
+          <img
+            className={styles.avatar}
+            src={replaceHttpWithHttps(userInfo.profile.avatarUrl)}
+            alt="avatar"
+          />
         </div>
       </div>
       <div className={styles.content}>

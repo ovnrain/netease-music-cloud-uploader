@@ -4,6 +4,7 @@ import QRCode from 'qrcode';
 import { Fragment, useEffect, useState } from 'react';
 import APIS from '../../apis';
 import PageLoading from '../../components/PageLoading';
+import { replaceHttpWithHttps } from '../../utils';
 
 export interface LoginPageProps {}
 
@@ -71,7 +72,11 @@ const LoginPage = (props: LoginPageProps) => {
       )}
       {loginStatus?.code === 802 && (
         <div className={styles.userInfo}>
-          <img className={styles.avatar} src={loginStatus.avatarUrl} alt={loginStatus.nickname} />
+          <img
+            className={styles.avatar}
+            src={replaceHttpWithHttps(loginStatus.avatarUrl)}
+            alt={loginStatus.nickname}
+          />
           <div className={styles.name}>{loginStatus.nickname}</div>
           <div className={styles.confirmTip}>请在 APP 上点击确认</div>
         </div>
