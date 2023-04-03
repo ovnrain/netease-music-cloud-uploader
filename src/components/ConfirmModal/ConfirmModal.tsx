@@ -3,9 +3,20 @@ import { Fragment, ReactNode, useState } from 'react';
 import clsx from 'clsx';
 import Trigger, { type TriggerProps } from '../Trigger';
 import Button from '../Button';
+import useValueOnChange from '../../hooks/useValueOnChange';
 
 export interface ConfirmModalProps
-  extends Pick<TriggerProps, 'children' | 'popupClassName' | 'placement' | 'popupStyle'> {
+  extends Pick<
+    TriggerProps,
+    | 'children'
+    | 'popupClassName'
+    | 'placement'
+    | 'popupStyle'
+    | 'disableOutsideClickHide'
+    | 'useOverlay'
+    | 'open'
+    | 'onOpenChange'
+  > {
   title?: string;
   content: ReactNode;
   cancelButtonText?: string;
@@ -23,10 +34,12 @@ const ConfirmModal = (props: ConfirmModalProps) => {
     onConfirm,
     cancelButtonText,
     confirmButtonText,
+    open: propOpen,
+    onOpenChange: propOnOpenChange,
     ...rest
   } = props;
 
-  const [open, setOpen] = useState(false);
+  const [computedOpen, onOpenChange] = useValueOnChange(false, propOpen, propOnOpenChange);
   const [isLoading, setIsLoading] = useState(false);
 
   return (
@@ -40,7 +53,7 @@ const ConfirmModal = (props: ConfirmModalProps) => {
             <Button
               className={styles.button}
               onClick={() => {
-                setOpen(false);
+                onOpenChange(false);
                 onCancel?.();
               }}
               disabled={isLoading}
@@ -56,7 +69,7 @@ const ConfirmModal = (props: ConfirmModalProps) => {
                 const result = await onConfirm?.();
                 setIsLoading(false);
                 if (result !== false) {
-                  setOpen(false);
+                  onOpenChange(false);
                 }
               }}
               disabled={isLoading}
@@ -70,8 +83,8 @@ const ConfirmModal = (props: ConfirmModalProps) => {
       trigger="click"
       placement="top"
       offset={4}
-      open={open}
-      onOpenChange={setOpen}
+      open={computedOpen}
+      onOpenChange={onOpenChange}
       {...rest}
     />
   );

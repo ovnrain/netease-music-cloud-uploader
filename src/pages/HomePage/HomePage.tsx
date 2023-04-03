@@ -9,17 +9,27 @@ import Table from '../../components/Table';
 import { Fragment } from 'react';
 import IconFont from '../../components/IconFont';
 import ConfirmModal from '../../components/ConfirmModal';
+import MatchSongModal from '../../components/MatchSongModal';
+import useUserInfo from '../../hooks/useUserInfo';
 
 export interface HomePageProps {}
 
 const HomePage = (props: HomePageProps) => {
   const queryClient = useQueryClient();
+  const userInfo = useUserInfo();
+
   const { isLoading, data: cloudList } = useQuery({
     queryKey: ['cloudList'],
     queryFn: APIS.getCloudList,
   });
   const deleteCloud = useMutation({
     mutationFn: APIS.deleteCloud,
+    onSettled: () => {
+      queryClient.invalidateQueries(['cloudList']);
+    },
+  });
+  const matchSong = useMutation({
+    mutationFn: APIS.matchSong,
     onSettled: () => {
       queryClient.invalidateQueries(['cloudList']);
     },
@@ -83,7 +93,28 @@ const HomePage = (props: HomePageProps) => {
             render: (_, record) => {
               return (
                 <Fragment>
-                  <IconFont className={styles.edit} type="ne-edit" title="修正信息" />
+                  <MatchSongModal
+                    songName={record.songName}
+                    onSubmit={(songId) => {
+                      toast.promise(
+                        matchSong.mutateAsync({
+                          songId: record.songId,
+                          adjustSongId: songId,
+                          userId: userInfo.account.id,
+                        }),
+                        {
+                          loading: '修改中...',
+                          success: '修改成功',
+                          error: (err) => (err instanceof Error ? err.message : '修改失败'),
+                        },
+                        {
+                          id: `match-cloud-${record.songId}`,
+                        }
+                      );
+                    }}
+                  >
+                    <IconFont className={styles.edit} type="ne-edit" title="修正信息" />
+                  </MatchSongModal>
                   <ConfirmModal
                     title="删除确认"
                     content={`确定要从网盘删除歌曲 《${record.songName}》 吗？`}

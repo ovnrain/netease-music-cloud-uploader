@@ -69,3 +69,10 @@ export interface DeleteCloudResult {
   failIds?: number[];
   msg?: string;
 }
+
+export interface MatchSongResult {
+  code: number;
+  data: boolean;
+  matchData: CloudSong;
+  message?: number | string;
+}

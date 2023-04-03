@@ -8,6 +8,7 @@ import type {
   UserInfo,
   UploadTokenResult,
   DeleteCloudResult,
+  MatchSongResult,
 } from './models';
 import rq from './rq';
 
@@ -19,6 +20,12 @@ export interface UploadCloudInfoData {
   album?: string;
   artist?: string;
   resourceId: string;
+}
+
+export interface MatchSongData {
+  userId: number;
+  adjustSongId: number;
+  songId: number;
 }
 
 async function getUserInfo() {
@@ -165,6 +172,28 @@ async function deleteCloud(data: { songIds: number[] }) {
   return response.data;
 }
 
+async function matchSong(data: MatchSongData) {
+  const response = await rq<MatchSongResult>(
+    'https://music.163.com/api/cloud/user/song/match',
+    {
+      method: 'POST',
+      body: Body.form({
+        userId: `${data.userId}`,
+        adjustSongId: `${data.adjustSongId}`,
+        songId: `${data.songId}`,
+      }),
+      responseType: ResponseType.JSON,
+    },
+    true
+  );
+
+  if (response.data.code !== 200) {
+    throw new Error(`${response.data.message}` || '匹配失败');
+  }
+
+  return response.data;
+}
+
 const APIS = {
   getUserInfo,
   getUniKey,
@@ -175,6 +204,7 @@ const APIS = {
   getUploadCloudInfo,
   pubCloud,
   deleteCloud,
+  matchSong,
 };
 
 export default APIS;
