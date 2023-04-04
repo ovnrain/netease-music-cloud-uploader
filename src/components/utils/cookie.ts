@@ -1,7 +1,13 @@
 import { BaseDirectory, readTextFile, writeTextFile } from '@tauri-apps/api/fs';
 
-export function replaceHttpWithHttps(url?: string) {
-  return url?.replace(/^http:/, 'https:');
+let memoryCookie = '';
+
+export function getMemoryCookie() {
+  return memoryCookie;
+}
+
+export function setMemoryCookie(cookie: string) {
+  memoryCookie = cookie;
 }
 
 export async function getUserCookie() {
@@ -16,7 +22,7 @@ export async function getUserCookie() {
 
 export async function setUserCookie(cookie: string) {
   try {
-    await writeTextFile('cookie.txt', cookie, {
+    return await writeTextFile('cookie.txt', cookie, {
       dir: BaseDirectory.AppLocalData,
     });
   } catch (e) {
