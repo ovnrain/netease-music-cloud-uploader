@@ -1,8 +1,8 @@
 import styles from './LoginPage.module.scss';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import QRCode from 'qrcode';
 import { Fragment } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import APIS from '../../apis';
 import PageLoading from '../../components/PageLoading';
 import Button from '../../components/Button';
@@ -12,6 +12,9 @@ import { setMemoryCookie, setUserCookie } from '../../utils/cookie';
 export interface LoginPageProps {}
 
 const LoginPage = (props: LoginPageProps) => {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
   const {
     isLoading,
     data: uniKey,
@@ -43,6 +46,9 @@ const LoginPage = (props: LoginPageProps) => {
           .join(';');
         setMemoryCookie(cookie);
         await setUserCookie(cookie);
+        // 非常重要！！！
+        queryClient.removeQueries(['userInfo']);
+        navigate('/');
       }
     },
     refetchOnWindowFocus: false,
@@ -52,10 +58,6 @@ const LoginPage = (props: LoginPageProps) => {
 
   if (isLoading) {
     return <PageLoading />;
-  }
-
-  if (loginStatus?.code === 803) {
-    return <Navigate to="/" />;
   }
 
   return (
