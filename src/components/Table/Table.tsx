@@ -17,14 +17,15 @@ export interface TableProps<T> {
   columns: TableColumn<T>[];
   dataSource: T[];
   rowKey: keyof T;
+  stickyHead?: boolean;
 }
 
 export default function Table<T extends object>(props: TableProps<T>) {
-  const { className, columns, dataSource, rowKey } = props;
+  const { className, columns, dataSource, rowKey, stickyHead = true } = props;
 
   return (
     <table className={clsx(styles.table, className)}>
-      <thead>
+      <thead className={clsx(styles.thead, { [styles.sticky]: stickyHead })}>
         <tr>
           {columns.map((column) => {
             return (
@@ -39,7 +40,7 @@ export default function Table<T extends object>(props: TableProps<T>) {
           })}
         </tr>
       </thead>
-      <tbody>
+      <tbody className={styles.tbody}>
         {dataSource.map((record, recordIndex) => {
           return (
             <tr key={String(record[rowKey]) || recordIndex}>

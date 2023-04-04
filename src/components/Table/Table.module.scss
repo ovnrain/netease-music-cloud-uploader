@@ -17,15 +17,23 @@
     }
   }
 
-  thead tr {
-    text-align: left;
+  .thead {
+    &.sticky {
+      position: sticky;
+      inset-block-start: 0;
+      background-color: #fdfdfd;
+    }
 
-    th {
-      font-weight: bold;
+    tr {
+      text-align: left;
+
+      th {
+        font-weight: bold;
+      }
     }
   }
 
-  tbody tr {
+  .tbody tr {
     &:nth-of-type(odd) {
       background-color: #f8f8f8;
     }
