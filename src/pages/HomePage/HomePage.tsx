@@ -11,7 +11,7 @@ import IconFont from '../../components/IconFont';
 import ConfirmModal from '../../components/ConfirmModal';
 import MatchSongModal from '../../components/MatchSongModal';
 import useUserInfo from '../../hooks/useUserInfo';
-import { replaceHttpWithHttps } from '../../components/utils/common';
+import { replaceHttpWithHttps } from '../../utils/common';
 
 export interface HomePageProps {}
 

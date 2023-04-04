@@ -1,5 +1,5 @@
 import { fetch, FetchOptions } from '@tauri-apps/api/http';
-import { getMemoryCookie, getUserCookie } from './components/utils/cookie';
+import { getMemoryCookie, getUserCookie } from './utils/cookie';
 
 export interface RqOptions {
   useCookie?: boolean;

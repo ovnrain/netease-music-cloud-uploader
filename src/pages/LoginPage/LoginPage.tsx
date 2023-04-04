@@ -6,8 +6,8 @@ import { Navigate } from 'react-router-dom';
 import APIS from '../../apis';
 import PageLoading from '../../components/PageLoading';
 import Button from '../../components/Button';
-import { replaceHttpWithHttps } from '../../components/utils/common';
-import { setMemoryCookie, setUserCookie } from '../../components/utils/cookie';
+import { replaceHttpWithHttps } from '../../utils/common';
+import { setMemoryCookie, setUserCookie } from '../../utils/cookie';
 
 export interface LoginPageProps {}
 

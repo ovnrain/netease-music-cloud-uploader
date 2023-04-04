@@ -12,9 +12,11 @@ export function setMemoryCookie(cookie: string) {
 
 export async function getUserCookie() {
   try {
-    return await readTextFile('cookie.txt', {
-      dir: BaseDirectory.AppLocalData,
-    });
+    return (
+      (await readTextFile('cookie.txt', {
+        dir: BaseDirectory.AppLocalData,
+      })) || ''
+    );
   } catch (e) {
     return '';
   }

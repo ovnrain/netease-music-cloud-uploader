@@ -2,7 +2,7 @@ import styles from './App.module.scss';
 import { Outlet, Route, Routes } from 'react-router-dom';
 import useUserInfo from './hooks/useUserInfo';
 import Button from './components/Button';
-import { replaceHttpWithHttps } from './components/utils/common';
+import { replaceHttpWithHttps } from './utils/common';
 
 function App() {
   const userInfo = useUserInfo();
