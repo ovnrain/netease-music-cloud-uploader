@@ -20,6 +20,13 @@
       "shell": {
         "all": false,
         "open": true
+      },
+      "fs": {
+        "all": true,
+        "scope": ["$APPLOCALDATA/*"]
+      },
+      "path": {
+        "all": true
       }
     },
     "bundle": {

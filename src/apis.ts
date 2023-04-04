@@ -65,7 +65,7 @@ async function qrLogin(uniKey: string) {
       useCookie: false,
     }
   );
-  return response.data;
+  return response;
 }
 
 async function getCloudList() {
