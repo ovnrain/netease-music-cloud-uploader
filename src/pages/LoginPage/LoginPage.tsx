@@ -2,17 +2,16 @@ import styles from './LoginPage.module.scss';
 import { useQuery } from '@tanstack/react-query';
 import QRCode from 'qrcode';
 import { Fragment } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import APIS from '../../apis';
 import PageLoading from '../../components/PageLoading';
-import { replaceHttpWithHttps, setUserCookie } from '../../utils';
 import Button from '../../components/Button';
+import { replaceHttpWithHttps } from '../../components/utils/common';
+import { setMemoryCookie, setUserCookie } from '../../components/utils/cookie';
 
 export interface LoginPageProps {}
 
 const LoginPage = (props: LoginPageProps) => {
-  const navigate = useNavigate();
-
   const {
     isLoading,
     data: uniKey,
@@ -35,23 +34,28 @@ const LoginPage = (props: LoginPageProps) => {
   const { data: loginResponse } = useQuery({
     queryKey: ['login', uniKey],
     queryFn: () => APIS.qrLogin(uniKey as string),
-    refetchInterval: (res) => (res?.data.code === 800 ? false : 1000),
+    refetchInterval: (res) => (res?.data.code === 800 || res?.data.code === 803 ? false : 1000),
     enabled: !!uniKey && !!qrImg,
     onSuccess: async (res) => {
       if (res.data.code === 803) {
         const cookie = res.rawHeaders['set-cookie']
           .map((c) => c.replace(/\s*Domain=[^(;|$)]+;*/, ''))
           .join(';');
+        setMemoryCookie(cookie);
         await setUserCookie(cookie);
-        navigate('/');
       }
     },
+    refetchOnWindowFocus: false,
   });
 
   const loginStatus = loginResponse?.data;
 
   if (isLoading) {
     return <PageLoading />;
+  }
+
+  if (loginStatus?.code === 803) {
+    return <Navigate to="/" />;
   }
 
   return (

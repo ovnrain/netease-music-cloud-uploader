@@ -4,6 +4,7 @@ import { Navigate } from 'react-router-dom';
 import UserInfoContext from '../contexts/UserInfoContext';
 import APIS from '../apis';
 import PageLoading from '../components/PageLoading';
+import { getMemoryCookie, getUserCookie, setMemoryCookie } from '../components/utils/cookie';
 
 export interface UserInfoProviderProps {
   children?: ReactElement;
@@ -15,6 +16,11 @@ const UserInfoProvider = (props: UserInfoProviderProps) => {
   const { isLoading, data: userInfo } = useQuery({
     queryKey: ['userInfo'],
     queryFn: APIS.getUserInfo,
+    onSuccess: async (data) => {
+      if (data.account && data.profile && !getMemoryCookie()) {
+        setMemoryCookie(await getUserCookie());
+      }
+    },
   });
 
   if (isLoading) {
@@ -23,10 +29,6 @@ const UserInfoProvider = (props: UserInfoProviderProps) => {
 
   if (!userInfo?.account || !userInfo?.profile) {
     return <Navigate to="/login" />;
-  }
-
-  if (!userInfo) {
-    return <div>获取用户信息失败...</div>;
   }
 
   return <UserInfoContext.Provider value={userInfo}>{children}</UserInfoContext.Provider>;
