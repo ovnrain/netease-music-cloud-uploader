@@ -87,3 +87,10 @@ export interface MatchSongResult extends RqResult {
   data: boolean;
   matchData: CloudSong;
 }
+
+export interface UploadFileResult extends RqResult {
+  requestId: string;
+  offset: number;
+  context: string;
+  callbackRetMsg: string;
+}

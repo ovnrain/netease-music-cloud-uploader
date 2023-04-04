@@ -40,15 +40,20 @@ const UploadPage = (props: UploadPageProps) => {
       }
 
       const check = await APIS.uploadCheck(uploadFile);
+      const token = await APIS.getUploadToken(uploadFile);
 
       if (check.needUpload) {
-        throw new Error('需要上传');
+        await APIS.uploadFile({
+          file: uploadFile.file,
+          md5: uploadFile.md5,
+          objectKey: token.result.objectKey,
+          token: token.result.token,
+        });
       }
 
-      const token = await APIS.getUploadToken(uploadFile);
       const cloudInfo = await APIS.getUploadCloudInfo({
-        album: uploadFile.metadata.album,
-        artist: uploadFile.metadata.artist,
+        album: uploadFile.metadata.album || '未知专辑',
+        artist: uploadFile.metadata.artist || '未知艺术家',
         filename: uploadFile.file.name,
         md5: uploadFile.md5,
         resourceId: `${token.result.resourceId}`,

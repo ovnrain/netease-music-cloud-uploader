@@ -11,6 +11,7 @@ import type {
   MatchSongResult,
   UploadCloudInfo,
   PubCloudResult,
+  UploadFileResult,
 } from './models';
 import rq from './rq';
 
@@ -28,6 +29,13 @@ export interface MatchSongData {
   userId: number;
   adjustSongId: number;
   songId: number;
+}
+
+export interface UploadFileData {
+  file: File;
+  md5: string;
+  objectKey: string;
+  token: string;
 }
 
 async function getUserInfo() {
@@ -94,8 +102,8 @@ async function uploadCheck(uploadFile: UploadFile) {
     }
   );
 
-  if (response.data.code !== 200) {
-    throw new Error(response.data.msg || `${response.data.message}` || '上传检查错误');
+  if (response.data.code !== 200 && response.data.code !== 201) {
+    throw new Error(response.data.msg || `${response.data.message || ''}` || '上传检查错误');
   }
 
   return response.data;
@@ -121,8 +129,8 @@ async function getUploadToken(uploadFile: UploadFile) {
     responseType: ResponseType.JSON,
   });
 
-  if (response.data.code !== 200) {
-    throw new Error(response.data.msg || `${response.data.message}` || '获取 token 错误');
+  if (response.data.code !== 200 && response.data.code !== 201) {
+    throw new Error(response.data.msg || `${response.data.message || ''}` || '获取 token 错误');
   }
 
   return response.data;
@@ -138,8 +146,10 @@ async function getUploadCloudInfo(data: UploadCloudInfoData) {
     responseType: ResponseType.JSON,
   });
 
-  if (response.data.code !== 200) {
-    throw new Error(response.data.msg || `${response.data.message}` || '获取云盘歌曲信息错误');
+  if (response.data.code !== 200 && response.data.code !== 201) {
+    throw new Error(
+      response.data.msg || `${response.data.message || ''}` || '获取云盘歌曲信息错误'
+    );
   }
 
   return response.data;
@@ -152,8 +162,8 @@ async function pubCloud(data: { songid: string }) {
     responseType: ResponseType.JSON,
   });
 
-  if (response.data.code !== 200) {
-    throw new Error(response.data.msg || `${response.data.message}` || '歌曲发布错误');
+  if (response.data.code !== 200 && response.data.code !== 201) {
+    throw new Error(response.data.msg || `${response.data.message || ''}` || '歌曲发布错误');
   }
 
   return response.data;
@@ -185,9 +195,25 @@ async function matchSong(data: MatchSongData) {
   });
 
   if (response.data.code !== 200) {
-    throw new Error(`${response.data.message}` || '匹配失败');
+    throw new Error(`${response.data.message || ''}` || '匹配失败');
   }
 
+  return response.data;
+}
+
+async function uploadFile(data: UploadFileData) {
+  const url = `http://45.127.129.8/jd-musicrep-privatecloud-audio-public/${data.objectKey}?offset=0&complete=true&version=1.0`;
+  const buffer = await data.file.arrayBuffer();
+  const response = await rq<UploadFileResult>(url, {
+    method: 'POST',
+    body: Body.bytes(buffer),
+    headers: {
+      'x-nos-token': data.token,
+      'Content-MD5': data.md5,
+      'Content-Type': data.file.type,
+    },
+    responseType: ResponseType.JSON,
+  });
   return response.data;
 }
 
@@ -202,6 +228,7 @@ const APIS = {
   pubCloud,
   deleteCloud,
   matchSong,
+  uploadFile,
 };
 
 export default APIS;
