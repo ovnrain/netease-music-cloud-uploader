@@ -1,7 +1,7 @@
 import styles from './LoginPage.module.scss';
 import { useQuery } from '@tanstack/react-query';
 import QRCode from 'qrcode';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment } from 'react';
 import APIS from '../../apis';
 import PageLoading from '../../components/PageLoading';
 import { replaceHttpWithHttps } from '../../utils';
@@ -19,28 +19,22 @@ const LoginPage = (props: LoginPageProps) => {
     queryFn: APIS.getUniKey,
     refetchOnWindowFocus: false,
   });
-  const [qrImg, setQrImg] = useState('');
+  const { data: qrImg } = useQuery({
+    queryKey: ['qrimg', uniKey],
+    queryFn: () =>
+      QRCode.toDataURL(`https://music.163.com/login?codekey=${uniKey}`, {
+        margin: 0,
+        errorCorrectionLevel: 'L',
+      }),
+    enabled: !!uniKey,
+    refetchOnWindowFocus: false,
+  });
   const { data: loginStatus } = useQuery({
     queryKey: ['loginstatus', uniKey],
     queryFn: () => APIS.qrLogin(uniKey as string),
     refetchInterval: (data) => (data?.code === 800 ? false : 1000),
     enabled: !!uniKey && !!qrImg,
   });
-
-  useEffect(() => {
-    async function getQrImg() {
-      if (!uniKey) {
-        setQrImg('');
-        return;
-      }
-
-      const qrImgUrl = `https://music.163.com/login?codekey=${uniKey}`;
-      const qrImg = await QRCode.toDataURL(qrImgUrl, { margin: 0, errorCorrectionLevel: 'L' });
-      setQrImg(qrImg);
-    }
-
-    getQrImg();
-  }, [uniKey]);
 
   if (isLoading) {
     return <PageLoading />;
