@@ -21,6 +21,7 @@ export interface ConfirmModalProps
   content: ReactNode;
   cancelButtonText?: string;
   confirmButtonText?: string;
+  contentClassName?: string;
   onCancel?: () => void;
   onConfirm?: () => void | boolean | Promise<void | boolean>;
 }
@@ -36,6 +37,7 @@ const ConfirmModal = (props: ConfirmModalProps) => {
     confirmButtonText,
     open: propOpen,
     onOpenChange: propOnOpenChange,
+    contentClassName,
     ...rest
   } = props;
 
@@ -48,7 +50,7 @@ const ConfirmModal = (props: ConfirmModalProps) => {
       popup={
         <Fragment>
           <div className={styles.title}>{title ?? '确认'}</div>
-          <div className={styles.content}>{content}</div>
+          <div className={clsx(styles.content, contentClassName)}>{content}</div>
           <div className={styles.buttons}>
             <Button
               className={styles.button}

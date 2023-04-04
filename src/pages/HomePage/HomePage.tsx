@@ -134,6 +134,7 @@ const HomePage = (props: HomePageProps) => {
                   <ConfirmModal
                     title="删除确认"
                     content={`确定要从网盘删除歌曲 《${songName}》 吗？`}
+                    contentClassName={styles.deleteContent}
                     placement="left"
                     onConfirm={() => {
                       toast.promise(

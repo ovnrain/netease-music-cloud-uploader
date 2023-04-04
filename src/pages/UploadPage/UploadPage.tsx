@@ -230,6 +230,7 @@ const UploadPage = (props: UploadPageProps) => {
                       <ConfirmModal
                         title="删除确认"
                         content={`确定要删除歌曲 《${songName}》 吗？`}
+                        contentClassName={styles.deleteContent}
                         onConfirm={() => {
                           setUploadFiles(
                             produce((draft) => {
