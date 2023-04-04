@@ -5,6 +5,7 @@ import { Fragment, useEffect, useState } from 'react';
 import APIS from '../../apis';
 import PageLoading from '../../components/PageLoading';
 import { replaceHttpWithHttps } from '../../utils';
+import Button from '../../components/Button';
 
 export interface LoginPageProps {}
 
@@ -55,9 +56,9 @@ const LoginPage = (props: LoginPageProps) => {
             {loginStatus?.code === 800 && (
               <div className={styles.reload}>
                 <div className={styles.reloadText}>二维码已失效</div>
-                <button className={styles.reloadButton} onClick={() => refetchUnikey()}>
+                <Button className={styles.reloadButton} onClick={() => refetchUnikey()}>
                   点击刷新
-                </button>
+                </Button>
               </div>
             )}
           </div>
