@@ -23,6 +23,7 @@ const LoginPage = (props: LoginPageProps) => {
     queryKey: ['unikey'],
     queryFn: APIS.getUniKey,
     refetchOnWindowFocus: false,
+    cacheTime: 0,
   });
   const { data: qrImg } = useQuery({
     queryKey: ['qrimg', uniKey],
@@ -48,6 +49,7 @@ const LoginPage = (props: LoginPageProps) => {
         await setUserCookie(cookie);
         // 非常重要！！！
         queryClient.removeQueries(['userInfo']);
+        queryClient.removeQueries(['cloudList']);
         navigate('/');
       }
     },
