@@ -9,6 +9,8 @@ import type {
   UploadTokenResult,
   DeleteCloudResult,
   MatchSongResult,
+  UploadCloudInfo,
+  PubCloudResult,
 } from './models';
 import rq from './rq';
 
@@ -91,6 +93,11 @@ async function uploadCheck(uploadFile: UploadFile) {
       responseType: ResponseType.JSON,
     }
   );
+
+  if (response.data.code !== 200) {
+    throw new Error(response.data.msg || `${response.data.message}` || '上传检查错误');
+  }
+
   return response.data;
 }
 
@@ -113,30 +120,42 @@ async function getUploadToken(uploadFile: UploadFile) {
     }),
     responseType: ResponseType.JSON,
   });
+
+  if (response.data.code !== 200) {
+    throw new Error(response.data.msg || `${response.data.message}` || '获取 token 错误');
+  }
+
   return response.data;
 }
 
 async function getUploadCloudInfo(data: UploadCloudInfoData) {
-  const response = await rq<{ code: number; songId: string }>(
-    'https://music.163.com/api/upload/cloud/info/v2',
-    {
-      method: 'POST',
-      body: Body.form({
-        bitrate: '999000',
-        ...data,
-      }),
-      responseType: ResponseType.JSON,
-    }
-  );
+  const response = await rq<UploadCloudInfo>('https://music.163.com/api/upload/cloud/info/v2', {
+    method: 'POST',
+    body: Body.form({
+      bitrate: '999000',
+      ...data,
+    }),
+    responseType: ResponseType.JSON,
+  });
+
+  if (response.data.code !== 200) {
+    throw new Error(response.data.msg || `${response.data.message}` || '获取云盘歌曲信息错误');
+  }
+
   return response.data;
 }
 
 async function pubCloud(data: { songid: string }) {
-  const response = await rq<{ code: number }>('https://interface.music.163.com/api/cloud/pub/v2', {
+  const response = await rq<PubCloudResult>('https://interface.music.163.com/api/cloud/pub/v2', {
     method: 'POST',
     body: Body.form(data),
     responseType: ResponseType.JSON,
   });
+
+  if (response.data.code !== 200) {
+    throw new Error(response.data.msg || `${response.data.message}` || '歌曲发布错误');
+  }
+
   return response.data;
 }
 

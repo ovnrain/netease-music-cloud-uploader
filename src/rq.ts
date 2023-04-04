@@ -4,7 +4,17 @@ export interface RqOptions {
   useCookie?: boolean;
 }
 
-export default function rq<T>(url: string, options?: FetchOptions, rqOptions?: RqOptions) {
+export interface RqResult {
+  code: number;
+  message?: string | number;
+  msg?: string;
+}
+
+export default function rq<T extends RqResult>(
+  url: string,
+  options?: FetchOptions,
+  rqOptions?: RqOptions
+) {
   const cookie = import.meta.env.VITE_API_COOKIE;
   const useCookie = rqOptions?.useCookie ?? true;
 
