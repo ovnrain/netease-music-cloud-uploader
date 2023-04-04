@@ -21,6 +21,7 @@ export interface AppMenuProps
     | 'useOverlay'
     | 'open'
     | 'onOpenChange'
+    | 'disabled'
   > {
   onClick?: (key: MenuKey, item: MenuItem) => void;
 }

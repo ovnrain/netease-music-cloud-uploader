@@ -1,6 +1,6 @@
 import styles from './App.module.scss';
 import { Outlet, Route, Routes } from 'react-router-dom';
-import { useQueryClient } from '@tanstack/react-query';
+import { useIsMutating, useQueryClient } from '@tanstack/react-query';
 import useUserInfo from './hooks/useUserInfo';
 import Button from './components/Button';
 import { replaceHttpWithHttps } from './utils/common';
@@ -9,6 +9,7 @@ import { setMemoryCookie, setUserCookie } from './utils/cookie';
 
 function App() {
   const queryClient = useQueryClient();
+  const isMutating = useIsMutating() > 0;
   const userInfo = useUserInfo();
 
   return (
@@ -18,12 +19,12 @@ function App() {
           <Route
             path="/"
             element={
-              <Button icon="ne-upload" to="/upload">
+              <Button icon="ne-upload" to="/upload" disabled={isMutating}>
                 上传
               </Button>
             }
           />
-          <Route path="/upload" element={<Button icon="ne-back" to="/" />} />
+          <Route path="/upload" element={<Button icon="ne-back" to="/" disabled={isMutating} />} />
         </Routes>
         <div className={styles.userInfo}>
           <div className={styles.nickname}>{userInfo.profile.nickname}</div>
@@ -35,6 +36,7 @@ function App() {
                 queryClient.invalidateQueries(['userInfo']);
               }
             }}
+            disabled={isMutating}
           >
             <img
               className={styles.avatar}

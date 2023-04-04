@@ -62,6 +62,7 @@ const UploadPage = (props: UploadPageProps) => {
       });
       return await APIS.pubCloud({ songid: cloudInfo.songId });
     },
+    mutationKey: ['upload'],
   });
 
   const onSelectChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
