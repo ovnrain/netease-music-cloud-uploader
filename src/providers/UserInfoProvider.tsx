@@ -4,7 +4,6 @@ import { Navigate } from 'react-router-dom';
 import UserInfoContext from '../contexts/UserInfoContext';
 import APIS from '../apis';
 import PageLoading from '../components/PageLoading';
-import { getMemoryCookie, getUserCookie, setMemoryCookie } from '../components/utils/cookie';
 
 export interface UserInfoProviderProps {
   children?: ReactElement;
@@ -16,11 +15,6 @@ const UserInfoProvider = (props: UserInfoProviderProps) => {
   const { isLoading, data: userInfo } = useQuery({
     queryKey: ['userInfo'],
     queryFn: APIS.getUserInfo,
-    onSuccess: async (data) => {
-      if (data.account && data.profile && !getMemoryCookie()) {
-        setMemoryCookie(await getUserCookie());
-      }
-    },
   });
 
   if (isLoading) {
