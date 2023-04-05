@@ -43,13 +43,21 @@
         "icons/icon.ico"
       ],
       "identifier": "com.ovnrain.netease-music-cloud-uploader",
-      "targets": "all"
+      "targets": "all",
+      "macOS": {
+        "minimumSystemVersion": "11.0"
+      }
     },
     "security": {
       "csp": null
     },
     "updater": {
-      "active": false
+      "active": true,
+      "dialog": true,
+      "endpoints": [
+        "https://gist.githubusercontent.com/ovnrain/1ac1898c57cdc7238239b4a9dc0ee72c/raw"
+      ],
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDY0MDgyRkQ4OEI3RDFDN0IKUldSN0hIMkwyQzhJWk9IRUdBQ3BMdTlqSDB3NlZ4cjczNUFybk9sTHVIK2FCZjVoeXlKQUlUZnAK"
     },
     "windows": [
       {
