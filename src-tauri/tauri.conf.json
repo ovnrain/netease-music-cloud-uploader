@@ -1,7 +1,6 @@
 {
   "build": {
     "beforeDevCommand": "npm run start",
-    "beforeBuildCommand": "npm run build:web",
     "devPath": "http://localhost:1420",
     "distDir": "../dist",
     "withGlobalTauri": false
