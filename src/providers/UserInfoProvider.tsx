@@ -21,11 +21,11 @@ const UserInfoProvider = (props: UserInfoProviderProps) => {
     return <PageLoading />;
   }
 
-  if (!userInfo?.account || !userInfo?.profile) {
+  if (!userInfo?.result.account || !userInfo?.result.profile) {
     return <Navigate to="/login" />;
   }
 
-  return <UserInfoContext.Provider value={userInfo}>{children}</UserInfoContext.Provider>;
+  return <UserInfoContext.Provider value={userInfo.result}>{children}</UserInfoContext.Provider>;
 };
 
 export default UserInfoProvider;

@@ -40,21 +40,22 @@ const HomePage = (props: HomePageProps) => {
     return <PageLoading mode="page" />;
   }
 
-  if (!cloudList?.count) {
+  if (!cloudList?.result?.count) {
     return <div className={styles.empty}>暂无歌曲</div>;
   }
 
   return (
     <div className={styles.container}>
       <Table
-        dataSource={cloudList.data}
+        dataSource={cloudList?.result.data}
         columns={[
           {
             title: '',
             dataIndex: 'index',
             width: 40,
             render: (_, record) => {
-              const index = cloudList.data.findIndex((item) => item.songId === record.songId) + 1;
+              const index =
+                cloudList?.result.data.findIndex((item) => item.songId === record.songId) + 1;
               return index < 10 ? `0${index}` : index;
             },
           },

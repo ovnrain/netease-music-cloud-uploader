@@ -17,7 +17,7 @@ const LoginPage = (props: LoginPageProps) => {
 
   const {
     isLoading,
-    data: uniKey,
+    data: uniKeyResponse,
     refetch: refetchUnikey,
   } = useQuery({
     queryKey: ['unikey'],
@@ -25,6 +25,7 @@ const LoginPage = (props: LoginPageProps) => {
     refetchOnWindowFocus: false,
     cacheTime: 0,
   });
+  const uniKey = uniKeyResponse?.result.unikey;
   const { data: qrImg } = useQuery({
     queryKey: ['qrimg', uniKey],
     queryFn: () =>
@@ -38,13 +39,12 @@ const LoginPage = (props: LoginPageProps) => {
   const { data: loginResponse } = useQuery({
     queryKey: ['login', uniKey],
     queryFn: () => APIS.qrLogin(uniKey as string),
-    refetchInterval: (res) => (res?.data.code === 800 || res?.data.code === 803 ? false : 1000),
+    refetchInterval: (res) => (res?.code === 800 || res?.code === 803 ? false : 1000),
     enabled: !!uniKey && !!qrImg,
     onSuccess: async (res) => {
-      if (res.data.code === 803) {
-        const cookie = res.rawHeaders['set-cookie']
-          .map((c) => c.replace(/\s*Domain=[^(;|$)]+;*/, ''))
-          .join(';');
+      if (res.code === 803) {
+        const cookie =
+          res.cookies?.map((c) => c.replace(/\s*Domain=[^(;|$)]+;*/, '')).join(';') || '';
         setMemoryCookie(cookie);
         await setUserCookie(cookie);
         // 非常重要！！！
@@ -56,7 +56,7 @@ const LoginPage = (props: LoginPageProps) => {
     refetchOnWindowFocus: false,
   });
 
-  const loginStatus = loginResponse?.data;
+  const loginStatus = loginResponse?.result;
 
   if (isLoading) {
     return <PageLoading />;
@@ -65,11 +65,11 @@ const LoginPage = (props: LoginPageProps) => {
   return (
     <div className={styles.container}>
       <div className={styles.title}>扫码登录</div>
-      {(!loginStatus || loginStatus.code !== 802) && !!qrImg && (
+      {(!loginStatus || loginResponse.code !== 802) && !!qrImg && (
         <Fragment>
           <div className={styles.qrcode}>
             <img className={styles.qrimg} src={qrImg} alt="二维码" />
-            {loginStatus?.code === 800 && (
+            {loginResponse?.code === 800 && (
               <div className={styles.reload}>
                 <div className={styles.reloadText}>二维码已失效</div>
                 <Button className={styles.reloadButton} onClick={() => refetchUnikey()}>
@@ -87,14 +87,14 @@ const LoginPage = (props: LoginPageProps) => {
           </div>
         </Fragment>
       )}
-      {loginStatus?.code === 802 && (
+      {loginResponse?.code === 802 && (
         <div className={styles.userInfo}>
           <img
             className={styles.avatar}
-            src={replaceHttpWithHttps(loginStatus.avatarUrl)}
-            alt={loginStatus.nickname}
+            src={replaceHttpWithHttps(loginStatus?.avatarUrl)}
+            alt={loginStatus?.nickname}
           />
-          <div className={styles.name}>{loginStatus.nickname}</div>
+          <div className={styles.name}>{loginStatus?.nickname}</div>
           <div className={styles.confirmTip}>请在 APP 上点击确认</div>
         </div>
       )}

@@ -5,17 +5,18 @@ export interface RqOptions {
   useCookie?: boolean;
 }
 
-export interface RqResult {
-  code: number;
-  message?: string | number;
-  msg?: string;
+export interface RqResult<T> {
+  code?: number;
+  message?: string;
+  cookies?: string[];
+  result: T;
 }
 
-export default async function rq<T extends RqResult>(
+export default async function rq<T>(
   url: string,
   options?: FetchOptions,
   rqOptions?: RqOptions
-) {
+): Promise<RqResult<T>> {
   const cookie = (getMemoryCookie() || (await getUserCookie())).trim();
   const useCookie = (rqOptions?.useCookie ?? true) && cookie.length > 0;
 
@@ -36,5 +37,17 @@ export default async function rq<T extends RqResult>(
         }
     : options;
 
-  return fetch<T>(url, fetchOptions);
+  const res = await fetch<T>(url, fetchOptions);
+  const { code, msg, message, ...rest } = res.data as {
+    code?: number;
+    msg?: string | number;
+    message?: string;
+  } & T;
+
+  return {
+    code: code,
+    message: message || msg?.toString(),
+    cookies: res.rawHeaders['set-cookie'],
+    result: rest as T,
+  };
 }

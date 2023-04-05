@@ -43,7 +43,7 @@ async function getUserInfo() {
     method: 'POST',
     responseType: ResponseType.JSON,
   });
-  return response.data;
+  return response;
 }
 
 async function getUniKey() {
@@ -58,7 +58,7 @@ async function getUniKey() {
       useCookie: false,
     }
   );
-  return response.data.unikey;
+  return response;
 }
 
 async function qrLogin(uniKey: string) {
@@ -82,7 +82,7 @@ async function getCloudList() {
     body: Body.form({ limit: '1000', offset: '0' }),
     responseType: ResponseType.JSON,
   });
-  return response.data;
+  return response;
 }
 
 async function uploadCheck(uploadFile: UploadFile) {
@@ -102,11 +102,11 @@ async function uploadCheck(uploadFile: UploadFile) {
     }
   );
 
-  if (response.data.code !== 200 && response.data.code !== 201) {
-    throw new Error(response.data.msg || `${response.data.message || ''}` || '上传检查错误');
+  if (response.code !== 200 && response.code !== 201) {
+    throw new Error(response.message || '上传检查错误');
   }
 
-  return response.data;
+  return response;
 }
 
 async function getUploadToken(uploadFile: UploadFile) {
@@ -129,11 +129,11 @@ async function getUploadToken(uploadFile: UploadFile) {
     responseType: ResponseType.JSON,
   });
 
-  if (response.data.code !== 200 && response.data.code !== 201) {
-    throw new Error(response.data.msg || `${response.data.message || ''}` || '获取 token 错误');
+  if (response.code !== 200 && response.code !== 201) {
+    throw new Error(response.message || '获取 token 错误');
   }
 
-  return response.data;
+  return response;
 }
 
 async function getUploadCloudInfo(data: UploadCloudInfoData) {
@@ -146,13 +146,11 @@ async function getUploadCloudInfo(data: UploadCloudInfoData) {
     responseType: ResponseType.JSON,
   });
 
-  if (response.data.code !== 200 && response.data.code !== 201) {
-    throw new Error(
-      response.data.msg || `${response.data.message || ''}` || '获取云盘歌曲信息错误'
-    );
+  if (response.code !== 200 && response.code !== 201) {
+    throw new Error(response.message || '获取云盘歌曲信息错误');
   }
 
-  return response.data;
+  return response;
 }
 
 async function pubCloud(data: { songid: string }) {
@@ -162,11 +160,11 @@ async function pubCloud(data: { songid: string }) {
     responseType: ResponseType.JSON,
   });
 
-  if (response.data.code !== 200 && response.data.code !== 201) {
-    throw new Error(response.data.msg || `${response.data.message || ''}` || '歌曲发布错误');
+  if (response.code !== 200 && response.code !== 201) {
+    throw new Error(response.message || '歌曲发布错误');
   }
 
-  return response.data;
+  return response;
 }
 
 async function deleteCloud(data: { songIds: number[] }) {
@@ -176,11 +174,11 @@ async function deleteCloud(data: { songIds: number[] }) {
     responseType: ResponseType.JSON,
   });
 
-  if (response.data.code !== 200) {
-    throw new Error(response.data.msg || '删除失败');
+  if (response.code !== 200) {
+    throw new Error(response.message || '删除失败');
   }
 
-  return response.data;
+  return response;
 }
 
 async function matchSong(data: MatchSongData) {
@@ -194,11 +192,11 @@ async function matchSong(data: MatchSongData) {
     responseType: ResponseType.JSON,
   });
 
-  if (response.data.code !== 200) {
-    throw new Error(`${response.data.message || ''}` || '匹配失败');
+  if (response.code !== 200) {
+    throw new Error(response.message || '匹配失败');
   }
 
-  return response.data;
+  return response;
 }
 
 async function uploadFile(data: UploadFileData) {
@@ -214,7 +212,7 @@ async function uploadFile(data: UploadFileData) {
     },
     responseType: ResponseType.JSON,
   });
-  return response.data;
+  return response;
 }
 
 const APIS = {

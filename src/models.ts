@@ -1,16 +1,15 @@
 import type { ICommonTagsResult } from 'music-metadata/lib/type';
-import type { RqResult } from './rq';
 
-export interface UserInfo extends RqResult {
+export interface UserInfo {
   account: { id: number };
   profile: { avatarUrl: string; nickname: string };
 }
 
-export interface Unikey extends RqResult {
+export interface Unikey {
   unikey: string;
 }
 
-export interface LoginStatus extends RqResult {
+export interface LoginStatus {
   message: string;
   nickname?: string;
   avatarUrl?: string;
@@ -40,7 +39,7 @@ export interface CloudSong {
   simpleSong: SimpleSong;
 }
 
-export interface CloudList extends RqResult {
+export interface CloudList {
   count: number;
   data: CloudSong[];
   hasMore: boolean;
@@ -58,13 +57,13 @@ export interface UploadFile {
   status?: 'pending' | 'uploading' | 'uploaded' | 'error';
 }
 
-export interface UploadCheckResult extends RqResult {
+export interface UploadCheckResult {
   // 如果是 false，说明云上已经有了，不需要再从本地上传了
   needUpload: boolean;
   songId: string;
 }
 
-export interface UploadTokenResult extends RqResult {
+export interface UploadTokenResult {
   result: {
     objectKey: string;
     resourceId: number;
@@ -72,23 +71,23 @@ export interface UploadTokenResult extends RqResult {
   };
 }
 
-export interface UploadCloudInfo extends RqResult {
+export interface UploadCloudInfo {
   songId: string;
 }
 
-export interface PubCloudResult extends RqResult {}
+export interface PubCloudResult {}
 
-export interface DeleteCloudResult extends RqResult {
+export interface DeleteCloudResult {
   succIds?: number[];
   failIds?: number[];
 }
 
-export interface MatchSongResult extends RqResult {
+export interface MatchSongResult {
   data: boolean;
   matchData: CloudSong;
 }
 
-export interface UploadFileResult extends RqResult {
+export interface UploadFileResult {
   requestId: string;
   offset: number;
   context: string;

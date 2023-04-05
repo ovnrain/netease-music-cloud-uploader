@@ -42,12 +42,12 @@ const UploadPage = (props: UploadPageProps) => {
       const check = await APIS.uploadCheck(uploadFile);
       const token = await APIS.getUploadToken(uploadFile);
 
-      if (check.needUpload) {
+      if (check.result.needUpload) {
         await APIS.uploadFile({
           file: uploadFile.file,
           md5: uploadFile.md5,
-          objectKey: token.result.objectKey,
-          token: token.result.token,
+          objectKey: token.result.result.objectKey,
+          token: token.result.result.token,
         });
       }
 
@@ -56,11 +56,11 @@ const UploadPage = (props: UploadPageProps) => {
         artist: uploadFile.metadata.artist || '未知艺术家',
         filename: uploadFile.file.name,
         md5: uploadFile.md5,
-        resourceId: `${token.result.resourceId}`,
+        resourceId: `${token.result.result.resourceId}`,
         song: uploadFile.metadata.title || uploadFile.file.name,
-        songid: check.songId,
+        songid: check.result.songId,
       });
-      return await APIS.pubCloud({ songid: cloudInfo.songId });
+      return await APIS.pubCloud({ songid: cloudInfo.result.songId });
     },
     mutationKey: ['upload'],
   });
