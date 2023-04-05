@@ -7,7 +7,7 @@
   },
   "package": {
     "productName": "网易云音乐云盘上传",
-    "version": "1.0.0"
+    "version": "1.0.1"
   },
   "tauri": {
     "allowlist": {
@@ -54,7 +54,7 @@
       "active": true,
       "dialog": true,
       "endpoints": [
-        "https://gist.githubusercontent.com/ovnrain/1ac1898c57cdc7238239b4a9dc0ee72c/raw"
+        "https://gist.githubusercontent.com/ovnrain/76e9f1d0cae8a20778eecd6943f173c7/raw"
       ],
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDY0MDgyRkQ4OEI3RDFDN0IKUldSN0hIMkwyQzhJWk9IRUdBQ3BMdTlqSDB3NlZ4cjczNUFybk9sTHVIK2FCZjVoeXlKQUlUZnAK"
     },
