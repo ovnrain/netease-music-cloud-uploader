@@ -4,7 +4,7 @@
 
 ## 下载安装
 
-前往 [发布](https://github.com/ovnrain/netease-music-cloud-uploader/releases) 页面，下载 .dmg 文件安装即可
+前往 [发布](https://github.com/ovnrain/netease-music-cloud-uploader/releases) 页面，下载 `.dmg` (x64: Intel 芯片，aarch64: Apple 芯片) 文件安装即可
 
 ## 界面预览
 
