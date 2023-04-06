@@ -17,6 +17,9 @@
 
 ### 1. 无法打开“网易云音乐云盘上传”，因为无法验证开发者。
 
+<details>
+<summary>点击展开</summary>
+
 ![无法打开](https://user-images.githubusercontent.com/18333709/230391564-6d5dcc8d-9ab7-46cd-9266-34085ca798e7.jpg)
 
 #### 解决方案 1
@@ -32,6 +35,8 @@
 按住 `Control` 键，在应用程序目录中点击 `网易云音乐云盘上传` 程序，选择打开
 
 ![](https://user-images.githubusercontent.com/18333709/230392811-9702fbee-447a-442f-9137-a2b62bf15f00.jpg)
+
+</details>
 
 ## 技术
 
