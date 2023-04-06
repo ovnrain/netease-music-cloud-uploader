@@ -42,10 +42,7 @@
         "icons/icon.ico"
       ],
       "identifier": "com.ovnrain.netease-music-cloud-uploader",
-      "targets": "all",
-      "macOS": {
-        "minimumSystemVersion": "11.0"
-      }
+      "targets": "all"
     },
     "security": {
       "csp": null
