@@ -13,6 +13,26 @@
 ![图3](https://user-images.githubusercontent.com/18333709/229979078-a9f9c59f-c06d-409f-95a8-315769eb7608.jpg)
 ![图4](https://user-images.githubusercontent.com/18333709/229979101-e9d24bf1-0805-446c-95a8-f8e277b6bf61.jpg)
 
+## 常见问题
+
+### 1. 无法打开“网易云音乐云盘上传”，因为无法验证开发者。
+
+![无法打开](https://user-images.githubusercontent.com/18333709/230391564-6d5dcc8d-9ab7-46cd-9266-34085ca798e7.jpg)
+
+#### 解决方案 1
+
+打开 系统偏好设置 - 安全性与隐私 - 通用
+
+![](https://user-images.githubusercontent.com/18333709/230392147-1d73d022-2a07-4abf-8577-9ead8635fb92.jpg)
+
+点击 `仍要打开`
+
+#### 解决方案 2
+
+按住 `Control` 键，在应用程序目录中点击 `网易云音乐云盘上传` 程序，选择打开
+
+![](https://user-images.githubusercontent.com/18333709/230392811-9702fbee-447a-442f-9137-a2b62bf15f00.jpg)
+
 ## 技术
 
 - [Tauri](https://tauri.app)
