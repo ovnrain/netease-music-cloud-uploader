@@ -67,7 +67,8 @@ const HomePage = (props: HomePageProps) => {
           {
             title: '歌手',
             dataIndex: 'artist',
-            render: (_, record) => record.simpleSong.ar?.[0].name || record.artist,
+            render: (_, record) =>
+              record.simpleSong.ar?.map(({ name }) => name).join('/') || record.artist,
           },
           {
             title: '专辑',
