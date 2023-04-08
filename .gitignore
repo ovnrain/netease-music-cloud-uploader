@@ -22,3 +22,5 @@ dist-ssr
 *.sw?
 
 build.sh
+/release/
+/release.js
