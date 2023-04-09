@@ -23,7 +23,7 @@
   font-size: 16px;
 
   &.has-songs {
-    padding: 16px 0;
+    padding: 32px 0;
     flex: none;
     margin: 16px 16px 0;
   }
@@ -51,6 +51,33 @@
 
   &:hover {
     // color: #d25647;
+  }
+
+  &.disabled {
+    color: #bfbfbf;
+    cursor: not-allowed;
+  }
+}
+
+.upload-icon {
+  font-size: 32px;
+  color: #333333;
+  margin-bottom: 8px;
+}
+
+.upload-wrapper {
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.select-link {
+  color: #e75f4e;
+  margin-left: 2px;
+  cursor: pointer;
+
+  &:hover {
+    color: #d25647;
   }
 
   &.disabled {

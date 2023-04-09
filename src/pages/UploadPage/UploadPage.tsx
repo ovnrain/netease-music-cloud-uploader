@@ -29,12 +29,12 @@ const UploadPage = (props: UploadPageProps) => {
   const [inputKey, setInputKey] = useState(uuidv4());
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
 
   const pendingUploadFiles = uploadFiles.filter((file) => file.status === 'pending');
   const unfinishedUploadFiles = uploadFiles.filter((file) => file.status !== 'uploaded');
 
   const isSelectFilesDisabled = isUploading || pendingUploadFiles.length >= MAX_SELECT_FILES;
-  const [isDragging, setIsDragging] = useState(false);
 
   const upload = useMutation({
     mutationFn: async (uploadFile: UploadFile) => {
@@ -302,10 +302,10 @@ const UploadPage = (props: UploadPageProps) => {
           multiple
           hidden
         />
+        <IconFont className={styles.uploadIcon} type="ne-cloud-upload" />
         <div>
-          <IconFont className={styles.uploadIcon} type="ne-cloud-upload" />
           <span>将文件拖拽到此处，或</span>
-          <Button
+          <span
             className={clsx(styles.selectLink, {
               [styles.disabled]: isSelectFilesDisabled,
             })}
@@ -316,7 +316,7 @@ const UploadPage = (props: UploadPageProps) => {
             }}
           >
             选择文件
-          </Button>
+          </span>
         </div>
       </div>
       {pendingUploadFiles.length > 0 && (
