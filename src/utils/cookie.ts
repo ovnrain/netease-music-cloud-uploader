@@ -30,8 +30,9 @@ export async function getUserCookie() {
 
 export async function setUserCookie(cookie: string) {
   try {
-    if (!(await exists(await appLocalDataDir()))) {
-      await createDir(await appLocalDataDir());
+    const appLocalDataDirPath = await appLocalDataDir();
+    if (!(await exists(appLocalDataDirPath))) {
+      await createDir(appLocalDataDirPath);
     }
     return await writeTextFile('cookie.txt', cookie, {
       dir: BaseDirectory.AppLocalData,
