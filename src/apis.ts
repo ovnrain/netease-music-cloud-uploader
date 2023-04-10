@@ -13,7 +13,7 @@ import type {
   PubCloudResult,
   UploadFileResult,
 } from './models';
-import rq from './rq';
+import rq, { RqResult } from './rq';
 
 export interface UploadCloudInfoData {
   md5: string;
@@ -76,13 +76,24 @@ async function qrLogin(uniKey: string) {
   return response;
 }
 
-async function getCloudList() {
+async function getCloudList(page: number): Promise<RqResult<CloudList>> {
+  // 每页 500 首歌曲
+  const size = 500;
   const response = await rq<CloudList>('https://music.163.com/api/v1/cloud/get', {
     method: 'POST',
-    body: Body.form({ limit: '1000', offset: '0' }),
+    body: Body.form({ limit: `${size}`, offset: `${(page - 1) * size}` }),
     responseType: ResponseType.JSON,
   });
-  return response;
+
+  const { result, ...rest } = response;
+
+  return {
+    ...rest,
+    result: {
+      ...result,
+      nextPage: result.hasMore ? page + 1 : undefined,
+    },
+  };
 }
 
 async function uploadCheck(uploadFile: UploadFile) {

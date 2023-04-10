@@ -46,6 +46,7 @@ export interface CloudList {
   maxSize: string;
   size: string;
   upgradeSign: number;
+  nextPage?: number;
 }
 
 export interface UploadFile {

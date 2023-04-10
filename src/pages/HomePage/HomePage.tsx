@@ -1,5 +1,5 @@
 import styles from './HomePage.module.scss';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import format from 'date-fns/format';
 import bytes from 'bytes';
 import toast from 'react-hot-toast';
@@ -12,6 +12,7 @@ import ConfirmModal from '../../components/ConfirmModal';
 import MatchSongModal from '../../components/MatchSongModal';
 import useUserInfo from '../../hooks/useUserInfo';
 import { replaceHttpWithHttps } from '../../utils/common';
+import type { CloudSong } from '../../models';
 
 export interface HomePageProps {}
 
@@ -19,9 +20,16 @@ const HomePage = (props: HomePageProps) => {
   const queryClient = useQueryClient();
   const userInfo = useUserInfo();
 
-  const { isLoading, data: cloudList } = useQuery({
+  const {
+    data: cloudListData,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    status,
+  } = useInfiniteQuery({
     queryKey: ['cloudList'],
-    queryFn: APIS.getCloudList,
+    queryFn: ({ pageParam = 1 }) => APIS.getCloudList(pageParam),
+    getNextPageParam: (lastPage) => lastPage.result.nextPage,
   });
   const deleteCloud = useMutation({
     mutationFn: APIS.deleteCloud,
@@ -36,26 +44,38 @@ const HomePage = (props: HomePageProps) => {
     },
   });
 
+  const isLoading = status === 'loading';
+  const cloudList =
+    cloudListData?.pages?.reduce<CloudSong[]>((prev, curr) => {
+      return [...prev, ...curr.result.data];
+    }, []) ?? [];
+
+  const onScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
+    const { scrollHeight, scrollTop, clientHeight } = e.currentTarget;
+    if (!isFetchingNextPage && scrollHeight - scrollTop - clientHeight < 50) {
+      fetchNextPage();
+    }
+  };
+
   if (isLoading) {
     return <PageLoading mode="page" />;
   }
 
-  if (!cloudList?.result?.count) {
+  if (!cloudListData?.pages?.[0]?.result.count) {
     return <div className={styles.empty}>暂无歌曲</div>;
   }
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} onScroll={hasNextPage ? onScroll : undefined}>
       <Table
-        dataSource={cloudList?.result.data}
+        dataSource={cloudList}
         columns={[
           {
             title: '',
             dataIndex: 'index',
             width: 40,
             render: (_, record) => {
-              const index =
-                cloudList?.result.data.findIndex((item) => item.songId === record.songId) + 1;
+              const index = cloudList.findIndex((item) => item.songId === record.songId) + 1;
               return index < 10 ? `0${index}` : index;
             },
           },
