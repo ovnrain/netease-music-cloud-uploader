@@ -2,6 +2,12 @@ import styles from './Table.module.scss';
 import clsx from 'clsx';
 import get from 'lodash.get';
 
+export interface ColumnRenderProps<T> {
+  value: T[keyof T];
+  record: T;
+  index: number;
+}
+
 export interface TableColumn<T> {
   title: string;
   dataIndex: keyof T | string;
@@ -9,7 +15,7 @@ export interface TableColumn<T> {
   width?: string | number;
   align?: 'left' | 'right' | 'center';
   noWrap?: boolean;
-  render?: (value: T[keyof T], record: T) => React.ReactNode;
+  render?: (props: ColumnRenderProps<T>) => React.ReactNode;
 }
 
 export interface TableProps<T> {
@@ -41,12 +47,12 @@ export default function Table<T extends object>(props: TableProps<T>) {
         </tr>
       </thead>
       <tbody className={styles.tbody}>
-        {dataSource.map((record, recordIndex) => {
+        {dataSource.map((record, index) => {
           return (
-            <tr key={String(record[rowKey]) || recordIndex}>
+            <tr key={String(record[rowKey]) || index}>
               {columns.map((column) => {
                 const value = get(record, column.dataIndex);
-                const content = column.render ? column.render(value, record) : value;
+                const content = column.render ? column.render({ value, record, index }) : value;
                 return (
                   <td
                     key={String(column.dataIndex)}

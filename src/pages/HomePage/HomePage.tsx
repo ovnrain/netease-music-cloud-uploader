@@ -74,26 +74,23 @@ const HomePage = (props: HomePageProps) => {
             title: '',
             dataIndex: 'index',
             width: 40,
-            render: (_, record) => {
-              const index = cloudList.findIndex((item) => item.songId === record.songId) + 1;
-              return index < 10 ? `0${index}` : index;
-            },
+            render: ({ index }) => (index + 1 < 10 ? `0${index + 1}` : index + 1),
           },
           {
             title: '音乐标题',
             dataIndex: 'songName',
-            render: (_, record) => record.simpleSong.name || record.songName,
+            render: ({ record }) => record.simpleSong.name || record.songName,
           },
           {
             title: '歌手',
             dataIndex: 'artist',
-            render: (_, record) =>
+            render: ({ record }) =>
               record.simpleSong.ar?.map(({ name }) => name).join('/') || record.artist,
           },
           {
             title: '专辑',
             dataIndex: 'album',
-            render: (_, record) => {
+            render: ({ record }) => {
               return (
                 <div className={styles.album}>
                   <img
@@ -110,14 +107,14 @@ const HomePage = (props: HomePageProps) => {
             title: '大小',
             dataIndex: 'fileSize',
             width: 100,
-            render: (_, record) =>
+            render: ({ record }) =>
               bytes.format(record.fileSize, { decimalPlaces: 1, fixedDecimals: true, unit: 'MB' }),
           },
           {
             title: '上传时间',
             dataIndex: 'addTime',
             width: 120,
-            render: (_, record) => (
+            render: ({ record }) => (
               <span title={format(record.addTime, 'yyyy-MM-dd HH:mm:ss')}>
                 {format(record.addTime, 'yyyy-MM-dd')}
               </span>
@@ -127,7 +124,7 @@ const HomePage = (props: HomePageProps) => {
             title: '操作',
             dataIndex: 'action',
             width: 80,
-            render: (_, record) => {
+            render: ({ record }) => {
               const songName = record.simpleSong.name || record.songName;
               return (
                 <Fragment>

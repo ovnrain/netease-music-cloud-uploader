@@ -142,26 +142,22 @@ const UploadPage = (props: UploadPageProps) => {
                 title: '',
                 dataIndex: 'index',
                 width: 40,
-                render: (_, record) => {
-                  const index =
-                    unfinishedUploadFiles.findIndex((item) => item.md5 === record.md5) + 1;
-                  return index < 10 ? `0${index}` : index;
-                },
+                render: ({ index }) => (index + 1 < 10 ? `0${index + 1}` : index + 1),
               },
               {
                 title: '音乐标题',
                 dataIndex: 'title',
-                render: (_, record) => record.metadata?.title || record.file.name,
+                render: ({ record }) => record.metadata?.title || record.file.name,
               },
               {
                 title: '歌手',
                 dataIndex: 'artist',
-                render: (_, record) => record.metadata?.artist,
+                render: ({ record }) => record.metadata?.artist,
               },
               {
                 title: '专辑',
                 dataIndex: 'album',
-                render: (_, record) => record.metadata?.album,
+                render: ({ record }) => record.metadata?.album,
               },
               {
                 title: '格式',
@@ -170,7 +166,7 @@ const UploadPage = (props: UploadPageProps) => {
               {
                 title: '大小',
                 dataIndex: 'size',
-                render: (_, record) =>
+                render: ({ record }) =>
                   bytes.format(record.file.size, {
                     decimalPlaces: 1,
                     fixedDecimals: true,
@@ -180,7 +176,7 @@ const UploadPage = (props: UploadPageProps) => {
               {
                 title: '状态',
                 dataIndex: 'status',
-                render: (_, record) => {
+                render: ({ record }) => {
                   if (record.status === 'error' || record.error) {
                     return (
                       <span className={styles.error}>{record.error?.message || '未知错误'}</span>
@@ -202,7 +198,7 @@ const UploadPage = (props: UploadPageProps) => {
                 title: '操作',
                 dataIndex: 'action',
                 width: 80,
-                render: (_, record) => {
+                render: ({ record }) => {
                   const songName = record.metadata?.title || record.file.name;
                   return (
                     <Fragment>
