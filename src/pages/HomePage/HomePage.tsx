@@ -52,7 +52,7 @@ const HomePage = (props: HomePageProps) => {
 
   const onScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
     const { scrollHeight, scrollTop, clientHeight } = e.currentTarget;
-    if (!isFetchingNextPage && scrollHeight - scrollTop - clientHeight < 50) {
+    if (!isFetchingNextPage && scrollHeight - scrollTop - clientHeight < 200) {
       fetchNextPage();
     }
   };
@@ -178,6 +178,9 @@ const HomePage = (props: HomePageProps) => {
         ]}
         rowKey="songId"
       />
+      <div className={styles.status}>
+        {isFetchingNextPage ? '加载中...' : hasNextPage ? '' : '已加载全部歌曲'}
+      </div>
     </div>
   );
 };
