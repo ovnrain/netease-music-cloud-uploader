@@ -21,14 +21,14 @@ const HomePage = (props: HomePageProps) => {
   const userInfo = useUserInfo();
 
   const {
-    data: cloudListData,
+    data: cloudData,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
     status,
   } = useInfiniteQuery({
     queryKey: ['cloudList'],
-    queryFn: ({ pageParam = 1 }) => APIS.getCloudList(pageParam),
+    queryFn: ({ pageParam = 1 }) => APIS.getCloudData(pageParam),
     getNextPageParam: (lastPage) => lastPage.result.nextPage,
   });
   const deleteCloud = useMutation({
@@ -45,8 +45,8 @@ const HomePage = (props: HomePageProps) => {
   });
 
   const isLoading = status === 'loading';
-  const cloudList =
-    cloudListData?.pages?.reduce<CloudSong[]>((prev, curr) => {
+  const cloudSongs =
+    cloudData?.pages?.reduce<CloudSong[]>((prev, curr) => {
       return [...prev, ...curr.result.data];
     }, []) ?? [];
 
@@ -61,14 +61,14 @@ const HomePage = (props: HomePageProps) => {
     return <PageLoading mode="page" />;
   }
 
-  if (!cloudListData?.pages?.[0]?.result.count) {
+  if (!cloudSongs.length) {
     return <div className={styles.empty}>暂无歌曲</div>;
   }
 
   return (
     <div className={styles.container} onScroll={hasNextPage ? onScroll : undefined}>
       <Table
-        dataSource={cloudList}
+        dataSource={cloudSongs}
         columns={[
           {
             title: '',

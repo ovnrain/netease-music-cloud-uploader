@@ -39,7 +39,7 @@ export interface CloudSong {
   simpleSong: SimpleSong;
 }
 
-export interface CloudList {
+export interface CloudData {
   count: number;
   data: CloudSong[];
   hasMore: boolean;

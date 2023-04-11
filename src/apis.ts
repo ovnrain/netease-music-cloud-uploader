@@ -1,7 +1,7 @@
 import { Body, ResponseType } from '@tauri-apps/api/http';
 import type {
   UploadCheckResult,
-  CloudList,
+  CloudData,
   LoginStatus,
   Unikey,
   UploadFile,
@@ -76,10 +76,10 @@ async function qrLogin(uniKey: string) {
   return response;
 }
 
-async function getCloudList(page: number): Promise<RqResult<CloudList>> {
+async function getCloudData(page: number): Promise<RqResult<CloudData>> {
   // 每页 500 首歌曲
   const size = 500;
-  const response = await rq<CloudList>('https://music.163.com/api/v1/cloud/get', {
+  const response = await rq<CloudData>('https://music.163.com/api/v1/cloud/get', {
     method: 'POST',
     body: Body.form({ limit: `${size}`, offset: `${(page - 1) * size}` }),
     responseType: ResponseType.JSON,
@@ -230,7 +230,7 @@ const APIS = {
   getUserInfo,
   getUniKey,
   qrLogin,
-  getCloudList,
+  getCloudData,
   uploadCheck,
   getUploadToken,
   getUploadCloudInfo,
