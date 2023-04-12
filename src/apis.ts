@@ -1,4 +1,4 @@
-import { Body, ResponseType } from '@tauri-apps/api/http';
+import { Body } from '@tauri-apps/api/http';
 import type {
   UploadCheckResult,
   CloudData,
@@ -38,51 +38,39 @@ export interface UploadFileData {
   token: string;
 }
 
-async function getUserInfo() {
-  const response = await rq<UserInfo>('https://music.163.com/api/nuser/account/get', {
-    method: 'POST',
-    responseType: ResponseType.JSON,
-  });
-  return response;
+function getUserInfo() {
+  return rq<UserInfo>('https://music.163.com/api/nuser/account/get');
 }
 
-async function getUniKey() {
-  const response = await rq<Unikey>(
+function getUniKey() {
+  return rq<Unikey>(
     'https://music.163.com/api/login/qrcode/unikey',
     {
-      method: 'POST',
       body: Body.form({ type: '1' }),
-      responseType: ResponseType.JSON,
     },
     {
       useCookie: false,
     }
   );
-  return response;
 }
 
-async function qrLogin(uniKey: string) {
-  const response = await rq<LoginStatus>(
+function qrLogin(uniKey: string) {
+  return rq<LoginStatus>(
     'https://music.163.com/api/login/qrcode/client/login',
     {
-      method: 'POST',
       body: Body.form({ type: '1', key: uniKey }),
-      responseType: ResponseType.JSON,
     },
     {
       useCookie: false,
     }
   );
-  return response;
 }
 
 async function getCloudData(page: number): Promise<RqResult<CloudData>> {
   // 每页 500 首歌曲
   const size = 500;
   const response = await rq<CloudData>('https://music.163.com/api/v1/cloud/get', {
-    method: 'POST',
     body: Body.form({ limit: `${size}`, offset: `${(page - 1) * size}` }),
-    responseType: ResponseType.JSON,
   });
 
   const { result, ...rest } = response;
@@ -100,7 +88,6 @@ async function uploadCheck(uploadFile: UploadFile) {
   const response = await rq<UploadCheckResult>(
     'https://interface.music.163.com/api/cloud/upload/check',
     {
-      method: 'POST',
       body: Body.form({
         bitrate: '999000',
         ext: '',
@@ -109,7 +96,6 @@ async function uploadCheck(uploadFile: UploadFile) {
         md5: uploadFile.md5,
         size: `${uploadFile.file.size}`,
       }),
-      responseType: ResponseType.JSON,
     }
   );
 
@@ -127,7 +113,6 @@ async function getUploadToken(uploadFile: UploadFile) {
     .replace(/\s/g, '')
     .replace(/\./g, '_');
   const response = await rq<UploadTokenResult>('https://music.163.com/api/nos/token/alloc', {
-    method: 'POST',
     body: Body.form({
       bucket: '',
       local: 'false',
@@ -137,7 +122,6 @@ async function getUploadToken(uploadFile: UploadFile) {
       filename: fileName,
       md5: uploadFile.md5,
     }),
-    responseType: ResponseType.JSON,
   });
 
   if (response.code !== 200 && response.code !== 201) {
@@ -149,12 +133,10 @@ async function getUploadToken(uploadFile: UploadFile) {
 
 async function getUploadCloudInfo(data: UploadCloudInfoData) {
   const response = await rq<UploadCloudInfo>('https://music.163.com/api/upload/cloud/info/v2', {
-    method: 'POST',
     body: Body.form({
       bitrate: '999000',
       ...data,
     }),
-    responseType: ResponseType.JSON,
   });
 
   if (response.code !== 200 && response.code !== 201) {
@@ -166,9 +148,7 @@ async function getUploadCloudInfo(data: UploadCloudInfoData) {
 
 async function pubCloud(data: { songid: string }) {
   const response = await rq<PubCloudResult>('https://interface.music.163.com/api/cloud/pub/v2', {
-    method: 'POST',
     body: Body.form(data),
-    responseType: ResponseType.JSON,
   });
 
   if (response.code !== 200 && response.code !== 201) {
@@ -180,9 +160,7 @@ async function pubCloud(data: { songid: string }) {
 
 async function deleteCloud(data: { songIds: number[] }) {
   const response = await rq<DeleteCloudResult>('https://music.163.com/api/cloud/del', {
-    method: 'POST',
     body: Body.form({ songIds: JSON.stringify(data.songIds) }),
-    responseType: ResponseType.JSON,
   });
 
   if (response.code !== 200) {
@@ -194,13 +172,11 @@ async function deleteCloud(data: { songIds: number[] }) {
 
 async function matchSong(data: MatchSongData) {
   const response = await rq<MatchSongResult>('https://music.163.com/api/cloud/user/song/match', {
-    method: 'POST',
     body: Body.form({
       userId: `${data.userId}`,
       adjustSongId: `${data.adjustSongId}`,
       songId: `${data.songId}`,
     }),
-    responseType: ResponseType.JSON,
   });
 
   if (response.code !== 200) {
@@ -213,17 +189,14 @@ async function matchSong(data: MatchSongData) {
 async function uploadFile(data: UploadFileData) {
   const url = `http://45.127.129.8/jd-musicrep-privatecloud-audio-public/${data.objectKey}?offset=0&complete=true&version=1.0`;
   const buffer = await data.file.arrayBuffer();
-  const response = await rq<UploadFileResult>(url, {
-    method: 'POST',
+  return rq<UploadFileResult>(url, {
     body: Body.bytes(buffer),
     headers: {
       'x-nos-token': data.token,
       'Content-MD5': data.md5,
       'Content-Type': data.file.type,
     },
-    responseType: ResponseType.JSON,
   });
-  return response;
 }
 
 const APIS = {

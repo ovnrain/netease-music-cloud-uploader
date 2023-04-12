@@ -1,4 +1,4 @@
-import { fetch, FetchOptions } from '@tauri-apps/api/http';
+import { fetch, FetchOptions, ResponseType } from '@tauri-apps/api/http';
 import { getMemoryCookie, getUserCookie } from './utils/cookie';
 
 export interface RqOptions {
@@ -12,9 +12,14 @@ export interface RqResult<T> {
   result: T;
 }
 
+const defaultOptions: FetchOptions = {
+  method: 'POST',
+  responseType: ResponseType.JSON,
+};
+
 export default async function rq<T>(
   url: string,
-  options?: FetchOptions,
+  options?: Partial<FetchOptions>,
   rqOptions?: RqOptions
 ): Promise<RqResult<T>> {
   const cookie = (getMemoryCookie() || (await getUserCookie())).trim();
@@ -23,6 +28,7 @@ export default async function rq<T>(
   const fetchOptions: FetchOptions | undefined = useCookie
     ? options
       ? {
+          ...defaultOptions,
           ...options,
           headers: {
             Cookie: cookie,
@@ -30,12 +36,14 @@ export default async function rq<T>(
           },
         }
       : {
-          method: 'GET',
+          ...defaultOptions,
           headers: {
             Cookie: cookie,
           },
         }
-    : options;
+    : options
+    ? { ...defaultOptions, ...options }
+    : defaultOptions;
 
   const res = await fetch<T>(url, fetchOptions);
   const { code, msg, message, ...rest } = res.data as {
