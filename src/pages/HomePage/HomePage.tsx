@@ -3,10 +3,11 @@ import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-q
 import format from 'date-fns/format';
 import bytes from 'bytes';
 import toast from 'react-hot-toast';
+import { open } from '@tauri-apps/api/shell';
 import APIS from '../../apis';
 import PageLoading from '../../components/PageLoading';
 import Table from '../../components/Table';
-import { Fragment } from 'react';
+import { Fragment, ReactNode } from 'react';
 import IconFont from '../../components/IconFont';
 import ConfirmModal from '../../components/ConfirmModal';
 import MatchSongModal from '../../components/MatchSongModal';
@@ -79,18 +80,65 @@ const HomePage = (props: HomePageProps) => {
           {
             title: '音乐标题',
             dataIndex: 'songName',
-            render: ({ record }) => record.simpleSong.name || record.songName,
+            render: ({ record }) => (
+              <span
+                className={styles.link}
+                onClick={async () => {
+                  await open(`https://music.163.com/#/song?id=${record.songId}`);
+                }}
+              >
+                {record.simpleSong.name || record.songName}
+              </span>
+            ),
           },
           {
             title: '歌手',
             dataIndex: 'artist',
-            render: ({ record }) =>
-              record.simpleSong.ar?.map(({ name }) => name).join('/') || record.artist,
+            render: ({ record }) => {
+              if (!record.simpleSong.ar?.some(({ name }) => !!name)) {
+                return record.artist;
+              }
+              return record.simpleSong.ar
+                .filter(({ name }) => !!name)
+                .map<ReactNode>(({ id, name }) =>
+                  id === 0 ? (
+                    name
+                  ) : (
+                    <span
+                      key={id}
+                      className={styles.link}
+                      onClick={async () => {
+                        await open(`https://music.163.com/#/artist?id=${id}`);
+                      }}
+                    >
+                      {name}
+                    </span>
+                  )
+                )
+                .reduce((prev, curr) => [prev, ' / ', curr]);
+            },
           },
           {
             title: '专辑',
             dataIndex: 'album',
             render: ({ record }) => {
+              let albumNode: ReactNode;
+
+              if (!record.simpleSong.al?.name || record.simpleSong.al.id === 0) {
+                albumNode = record.album;
+              } else {
+                albumNode = (
+                  <span
+                    className={styles.link}
+                    onClick={async () => {
+                      await open(`https://music.163.com/#/album?id=${record.simpleSong.al?.id}`);
+                    }}
+                  >
+                    {record.simpleSong.al.name}
+                  </span>
+                );
+              }
+
               return (
                 <div className={styles.album}>
                   <img
@@ -98,7 +146,7 @@ const HomePage = (props: HomePageProps) => {
                     src={replaceHttpWithHttps(record.simpleSong.al?.picUrl)}
                     alt={record.simpleSong.al?.name || record.album}
                   />
-                  {record.simpleSong.al?.name || record.album}
+                  {albumNode}
                 </div>
               );
             },

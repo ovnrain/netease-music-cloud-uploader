@@ -19,10 +19,12 @@ export interface SimpleSong {
   name: string;
   // 歌手
   ar?: {
+    id: number;
     name?: string;
   }[];
   // 专辑
   al?: {
+    id: number;
     name?: string;
     picUrl: string;
   };

@@ -48,3 +48,11 @@
   height: 48px;
   color: #b9b9b9;
 }
+
+.link {
+  cursor: pointer;
+
+  &:hover {
+    color: #c2463a;
+  }
+}
