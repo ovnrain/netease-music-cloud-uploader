@@ -17,6 +17,44 @@ const MatchSongModal = (props: MatchSongModalProps) => {
   const [matchError, setMatchError] = useState('');
   const matchInputRef = useRef<HTMLInputElement>(null);
 
+  const onOpenChange = (open: boolean) => {
+    setMatchModalOpen(open);
+    if (!open) {
+      setMatchValue('');
+      setMatchError('');
+    } else {
+      setTimeout(() => {
+        matchInputRef.current?.focus();
+      }, 0);
+    }
+  };
+
+  const onConfirm = () => {
+    const linkReg = /^https:\/\/music\.163\.com\/#\/song\?id=(\d+)$/;
+    const value = matchValue.trim();
+
+    if (!value) {
+      return false;
+    }
+
+    if (/^http/.test(value) && !linkReg.test(value)) {
+      setMatchError('链接格式不正确');
+      return false;
+    }
+
+    if (!/^\d+$/.test(value)) {
+      setMatchError('ID格式不正确');
+      return false;
+    }
+
+    setMatchError('');
+
+    const m = value.match(linkReg);
+    const id = m ? m[1] : value;
+
+    onSubmit?.(Number(id));
+  };
+
   return (
     <ConfirmModal
       title={`修正《${songName}》 `}
@@ -31,6 +69,15 @@ const MatchSongModal = (props: MatchSongModalProps) => {
             onChange={(e) => {
               setMatchValue(e.target.value);
             }}
+            onKeyUp={(e) => {
+              if (e.key === 'Enter') {
+                const result = onConfirm();
+
+                if (result !== false) {
+                  onOpenChange(false);
+                }
+              }
+            }}
           />
           {!!matchError && <div className={styles.error}>{matchError}</div>}
           <div className={styles.matchTip}>
@@ -42,42 +89,8 @@ const MatchSongModal = (props: MatchSongModalProps) => {
       }
       placement="left"
       open={matchModalOpen}
-      onOpenChange={(open) => {
-        setMatchModalOpen(open);
-        if (!open) {
-          setMatchValue('');
-          setMatchError('');
-        } else {
-          setTimeout(() => {
-            matchInputRef.current?.focus();
-          }, 0);
-        }
-      }}
-      onConfirm={async () => {
-        const linkReg = /^https:\/\/music\.163\.com\/#\/song\?id=(\d+)$/;
-        const value = matchValue.trim();
-
-        if (!value) {
-          return false;
-        }
-
-        if (/^http/.test(value) && !linkReg.test(value)) {
-          setMatchError('链接格式不正确');
-          return false;
-        }
-
-        if (!/^\d+$/.test(value)) {
-          setMatchError('ID格式不正确');
-          return false;
-        }
-
-        setMatchError('');
-
-        const m = value.match(linkReg);
-        const id = m ? m[1] : value;
-
-        onSubmit?.(Number(id));
-      }}
+      onOpenChange={onOpenChange}
+      onConfirm={onConfirm}
     >
       {children}
     </ConfirmModal>
