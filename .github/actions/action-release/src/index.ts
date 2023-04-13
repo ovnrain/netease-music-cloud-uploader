@@ -119,11 +119,9 @@ async function run(): Promise<void> {
   const gistKit = getOctokit(process.env.GIST_TOKEN);
 
   // 更新 gist
-  const gistId = getInput('gistId');
-
-  if (!gistId) {
-    return setFailed('gistId is not defined');
-  }
+  const gistId = getInput('gistId', {
+    required: true,
+  });
 
   const notes =
     targetLog.notes.length < 2

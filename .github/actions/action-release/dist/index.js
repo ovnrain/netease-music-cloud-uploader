@@ -100,10 +100,9 @@ async function run() {
     }
     const gistKit = (0, github_1.getOctokit)(process.env.GIST_TOKEN);
     // 更新 gist
-    const gistId = (0, core_1.getInput)('gistId');
-    if (!gistId) {
-        return (0, core_1.setFailed)('gistId is not defined');
-    }
+    const gistId = (0, core_1.getInput)('gistId', {
+        required: true,
+    });
     const notes = targetLog.notes.length < 2
         ? targetLog.notes[0]
         : targetLog.notes.map((s, i) => `${i + 1}. ${s}`).join('\n');
