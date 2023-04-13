@@ -1,0 +1,10 @@
+{
+  "extends": "@tsconfig/node16/tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./lib",
+    "rootDir": "./src",
+    "noImplicitAny": true,
+    "importsNotUsedAsValues": "error"
+  },
+  "exclude": ["node_modules", "**/*.test.ts"]
+}

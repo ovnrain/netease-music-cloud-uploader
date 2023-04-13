@@ -1,0 +1,9 @@
+name: 'release app'
+description: 'release app'
+inputs:
+  gistId:
+    description: 'updater gist id'
+    required: true
+runs:
+  using: 'node16'
+  main: 'dist/index.js'

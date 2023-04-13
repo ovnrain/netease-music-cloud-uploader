@@ -1,0 +1,53 @@
+name: 'release app'
+
+on:
+  push:
+    branches:
+      - release
+  workflow_dispatch:
+
+jobs:
+  publish-tauri:
+    permissions: write-all
+
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Use node lts
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build frontend
+        run: pnpm build:web
+
+      - name: install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: install aarch64 target
+        run: rustup target add aarch64-apple-darwin
+
+      - name: install x86_64 target
+        run: rustup target add x86_64-apple-darwin
+
+      - name: Hello release step
+        uses: ./.github/actions/action-release
+        env:
+          TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
+          TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
+        with:
+          gistId: '76e9f1d0cae8a20778eecd6943f173c7'
