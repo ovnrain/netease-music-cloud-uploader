@@ -50,6 +50,13 @@ export interface TriggerProps {
    */
   disableOutsideClickHide?: boolean;
   zIndex?: number;
+  delay?:
+    | number
+    | Partial<{
+        open: number;
+        close: number;
+      }>;
+  restMs?: number;
   onOpenChange?: (open: boolean) => void;
 }
 
@@ -74,6 +81,8 @@ const InnerTrigger = (props: TriggerProps) => {
     useOverlay,
     disableOutsideClickHide,
     zIndex,
+    delay = 200,
+    restMs = 100,
   } = props;
 
   const isContextMenu = trigger === 'contextmenu';
@@ -112,7 +121,7 @@ const InnerTrigger = (props: TriggerProps) => {
     });
 
   const { getReferenceProps, getFloatingProps } = useInteractions([
-    useHover(context, { delay: 200, restMs: 100, enabled: !disabled && trigger === 'hover' }),
+    useHover(context, { delay, restMs, enabled: !disabled && trigger === 'hover' }),
     useClick(context, { enabled: !disabled && trigger === 'click' }),
     useDismiss(context, {
       enabled: autoDismiss ?? true,

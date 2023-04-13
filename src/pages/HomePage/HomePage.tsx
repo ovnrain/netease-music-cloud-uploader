@@ -14,6 +14,7 @@ import MatchSongModal from '../../components/MatchSongModal';
 import useUserInfo from '../../hooks/useUserInfo';
 import { replaceHttpWithHttps } from '../../utils/common';
 import type { CloudSong } from '../../models';
+import Trigger from '../../components/Trigger';
 
 export interface HomePageProps {}
 
@@ -122,6 +123,7 @@ const HomePage = (props: HomePageProps) => {
             title: '专辑',
             dataIndex: 'album',
             render: ({ record }) => {
+              const picUrl = replaceHttpWithHttps(record.simpleSong.al?.picUrl);
               let albumNode: ReactNode;
 
               if (!record.simpleSong.al?.name || record.simpleSong.al.id === 0) {
@@ -141,11 +143,25 @@ const HomePage = (props: HomePageProps) => {
 
               return (
                 <div className={styles.album}>
-                  <img
-                    className={styles.albumImg}
-                    src={replaceHttpWithHttps(record.simpleSong.al?.picUrl)}
-                    alt={record.simpleSong.al?.name || record.album}
-                  />
+                  <Trigger
+                    trigger="hover"
+                    popup={
+                      <img
+                        className={styles.bigAlbumImg}
+                        src={picUrl}
+                        alt={record.simpleSong.al?.name || record.album}
+                      />
+                    }
+                    placement="bottom"
+                    delay={0}
+                    offset={4}
+                  >
+                    <img
+                      className={styles.albumImg}
+                      src={picUrl}
+                      alt={record.simpleSong.al?.name || record.album}
+                    />
+                  </Trigger>
                   {albumNode}
                 </div>
               );
