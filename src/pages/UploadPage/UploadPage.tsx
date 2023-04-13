@@ -20,7 +20,7 @@ import EditFileModal from '../../components/EditFileModal';
 
 export interface UploadPageProps {}
 
-const audioTypes = ['mp3', 'flac', 'ape', 'wma', 'wav', 'ogg', 'aac'];
+const audioTypes = ['mp3', 'flac', 'ape', 'wma', 'wav', 'ogg', 'aac', 'm4a'];
 
 const MAX_SELECT_FILES = 30;
 
