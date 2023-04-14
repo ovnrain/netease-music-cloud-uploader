@@ -27,22 +27,22 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'pnpm'
 
-      - name: Install dependencies
+      - name: Install frontend dependencies
         run: pnpm install
 
       - name: Build frontend
         run: pnpm build:web
 
-      - name: install Rust stable
+      - name: Install Rust stable
         uses: dtolnay/rust-toolchain@stable
 
-      - name: install aarch64 target
+      - name: Install aarch64 target
         run: rustup target add aarch64-apple-darwin
 
-      - name: install x86_64 target
+      - name: Install x86_64 target
         run: rustup target add x86_64-apple-darwin
 
-      - name: Hello release step
+      - name: Build and release app
         uses: ./.github/actions/action-release
         env:
           TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
