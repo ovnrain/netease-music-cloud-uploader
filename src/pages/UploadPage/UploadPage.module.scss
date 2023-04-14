@@ -14,17 +14,61 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   flex: 1;
+  position: relative;
+  border: 2px dashed rgba(0, 0, 0, 0.15);
+  margin: 16px;
+  border-radius: 8px;
+  font-size: 16px;
 
   &.has-songs {
     padding: 16px 0;
     flex: none;
-    border-top: 1px solid #ededed;
-
-    .upload-button {
-      margin-left: 16px;
-    }
+    margin: 16px 16px 0;
   }
+
+  .drop-mask {
+    &.is-dragging {
+      display: block;
+    }
+
+    display: none;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+}
+
+.select-link {
+  //   color: #e75f4e;
+  margin-left: 2px;
+  cursor: pointer;
+
+  &:hover {
+    // color: #d25647;
+  }
+
+  &.disabled {
+    color: #bfbfbf;
+    cursor: not-allowed;
+  }
+}
+
+.upload-icon {
+  font-size: 32px;
+  color: #333333;
+  margin-bottom: 8px;
+}
+
+.upload-wrapper {
+  padding: 16px;
+  display: flex;
+  justify-content: center;
 }
 
 .error {

@@ -33,6 +33,9 @@ const UploadPage = (props: UploadPageProps) => {
   const pendingUploadFiles = uploadFiles.filter((file) => file.status === 'pending');
   const unfinishedUploadFiles = uploadFiles.filter((file) => file.status !== 'uploaded');
 
+  const isSelectFilesDisabled = isUploading || pendingUploadFiles.length >= MAX_SELECT_FILES;
+  const [isDragging, setIsDragging] = useState(false);
+
   const upload = useMutation({
     mutationFn: async (uploadFile: UploadFile) => {
       if (!uploadFile.metadata) {
@@ -64,9 +67,8 @@ const UploadPage = (props: UploadPageProps) => {
     },
     mutationKey: ['upload'],
   });
-
-  const onSelectChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    let files = Array.from(e.target.files || []);
+  async function handleFiles(fileslist: File[]) {
+    let files = fileslist;
     setInputKey(uuidv4());
 
     const uploadFiles: UploadFile[] = [];
@@ -129,6 +131,22 @@ const UploadPage = (props: UploadPageProps) => {
     }
 
     setUploadFiles((prevFiles) => uniqBy([...prevFiles, ...uploadFiles], 'md5'));
+  }
+  const handleDragEnter = () => {
+    if (isSelectFilesDisabled) return;
+    setIsDragging(true);
+  };
+  const handleDragLeave = () => setIsDragging(false);
+
+  const handleDrops = async (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    setIsDragging(false);
+    if (isSelectFilesDisabled) return;
+    await handleFiles(Array.from(event.dataTransfer.files));
+  };
+  const onSelectChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    await handleFiles(files);
   };
 
   return (
@@ -263,9 +281,18 @@ const UploadPage = (props: UploadPageProps) => {
       )}
       <div
         className={clsx(styles.selectWrapper, {
+          dropzone: true,
           [styles.hasSongs]: unfinishedUploadFiles.length > 0,
         })}
+        onDragEnter={handleDragEnter}
       >
+        <div
+          className={clsx(styles.dropMask, {
+            [styles.isDragging]: isDragging,
+          })}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrops}
+        ></div>
         <input
           key={inputKey}
           type="file"
@@ -275,17 +302,25 @@ const UploadPage = (props: UploadPageProps) => {
           multiple
           hidden
         />
-        <Button
-          className={styles.selectButton}
-          onClick={() => {
-            fileInputRef.current?.click();
-          }}
-          icon="ne-add"
-          disabled={isUploading || pendingUploadFiles.length >= MAX_SELECT_FILES}
-        >
-          {unfinishedUploadFiles.length > 0 ? '继续添加' : '选择音乐文件'}
-        </Button>
-        {pendingUploadFiles.length > 0 && (
+        <div>
+          <IconFont className={styles.uploadIcon} type="ne-cloud-upload" />
+          <span>将文件拖拽到此处，或</span>
+          <Button
+            className={clsx(styles.selectLink, {
+              [styles.disabled]: isSelectFilesDisabled,
+            })}
+            onClick={() => {
+              if (!isSelectFilesDisabled) {
+                fileInputRef.current?.click();
+              }
+            }}
+          >
+            选择文件
+          </Button>
+        </div>
+      </div>
+      {pendingUploadFiles.length > 0 && (
+        <div className={styles.uploadWrapper}>
           <Button
             className={styles.uploadButton}
             onClick={async () => {
@@ -337,8 +372,8 @@ const UploadPage = (props: UploadPageProps) => {
           >
             上传全部
           </Button>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };
