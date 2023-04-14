@@ -69,30 +69,19 @@ const UploadPage = (props: UploadPageProps) => {
   });
 
   async function handleFiles(fileslist: File[]) {
-    let files = fileslist;
     setInputKey(uuidv4());
 
-    const uploadFiles: UploadFile[] = [];
-
-    if (!files) {
+    if (!fileslist.length) {
       return;
     }
 
-    if (pendingUploadFiles.length + files.length > MAX_SELECT_FILES) {
-      toast(`最多同时上传 ${MAX_SELECT_FILES} 个文件`, {
-        duration: 1800,
-        icon: <IconFont className={styles.warn} type="ne-warn" />,
-      });
-      files = files.slice(0, MAX_SELECT_FILES - pendingUploadFiles.length);
-    }
-
-    const validFiles = files.filter((file) => {
+    let validFiles = fileslist.filter((file) => {
       const ext = file.name.split('.').pop();
       return file.type.startsWith('audio/') && ext && audioTypes.includes(ext);
     });
 
-    if (files.length !== validFiles.length) {
-      toast(`已过滤 ${files.length - validFiles.length} 个不符合格式的文件`, {
+    if (fileslist.length !== validFiles.length) {
+      toast(`已过滤 ${fileslist.length - validFiles.length} 个不符合格式的文件`, {
         duration: 1800,
         icon: <IconFont className={styles.warn} type="ne-warn" />,
       });
@@ -101,6 +90,16 @@ const UploadPage = (props: UploadPageProps) => {
     if (!validFiles.length) {
       return;
     }
+
+    if (pendingUploadFiles.length + validFiles.length > MAX_SELECT_FILES) {
+      toast(`最多同时上传 ${MAX_SELECT_FILES} 个文件`, {
+        duration: 1800,
+        icon: <IconFont className={styles.warn} type="ne-warn" />,
+      });
+      validFiles = validFiles.slice(0, MAX_SELECT_FILES - pendingUploadFiles.length);
+    }
+
+    const uploadFiles: UploadFile[] = [];
 
     for (let index = 0; index < validFiles.length; index++) {
       const file = validFiles[index];
