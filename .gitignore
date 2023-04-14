@@ -20,7 +20,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-build.sh
-/release/
-/release.js
