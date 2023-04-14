@@ -45,9 +45,6 @@ const router = createBrowserRouter([
 
 const queryClient = new QueryClient();
 
-document.addEventListener('drop', (event) => event.preventDefault());
-document.addEventListener('dragover', (event) => event.preventDefault());
-
 const root = createRoot(document.getElementById('root') as HTMLElement);
 
 root.render(
