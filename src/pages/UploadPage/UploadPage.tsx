@@ -67,6 +67,7 @@ const UploadPage = (props: UploadPageProps) => {
     },
     mutationKey: ['upload'],
   });
+
   async function handleFiles(fileslist: File[]) {
     let files = fileslist;
     setInputKey(uuidv4());
@@ -132,21 +133,23 @@ const UploadPage = (props: UploadPageProps) => {
 
     setUploadFiles((prevFiles) => uniqBy([...prevFiles, ...uploadFiles], 'md5'));
   }
+
   const handleDragEnter = () => {
-    if (isSelectFilesDisabled) return;
     setIsDragging(true);
   };
-  const handleDragLeave = () => setIsDragging(false);
 
-  const handleDrops = async (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
+  const handleDragLeave = () => {
     setIsDragging(false);
-    if (isSelectFilesDisabled) return;
-    await handleFiles(Array.from(event.dataTransfer.files));
   };
+
+  const handleDrops = async (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragging(false);
+    await handleFiles(Array.from(e.dataTransfer.files));
+  };
+
   const onSelectChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
-    await handleFiles(files);
+    await handleFiles(Array.from(e.target.files || []));
   };
 
   return (
@@ -281,18 +284,18 @@ const UploadPage = (props: UploadPageProps) => {
       )}
       <div
         className={clsx(styles.selectWrapper, {
-          dropzone: true,
           [styles.hasSongs]: unfinishedUploadFiles.length > 0,
+          [styles.disabled]: isSelectFilesDisabled,
         })}
-        onDragEnter={handleDragEnter}
+        onDragEnter={!isSelectFilesDisabled ? handleDragEnter : undefined}
       >
         <div
           className={clsx(styles.dropMask, {
             [styles.isDragging]: isDragging,
           })}
           onDragLeave={handleDragLeave}
-          onDrop={handleDrops}
-        ></div>
+          onDrop={!isSelectFilesDisabled ? handleDrops : undefined}
+        />
         <input
           key={inputKey}
           type="file"
@@ -302,7 +305,10 @@ const UploadPage = (props: UploadPageProps) => {
           multiple
           hidden
         />
-        <IconFont className={styles.uploadIcon} type="ne-cloud-upload" />
+        <IconFont
+          className={clsx(styles.uploadIcon, { [styles.disabled]: isSelectFilesDisabled })}
+          type="ne-cloud-upload"
+        />
         <div>
           <span>将文件拖拽到此处，或</span>
           <span

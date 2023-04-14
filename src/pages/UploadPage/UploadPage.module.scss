@@ -28,11 +28,12 @@
     margin: 16px 16px 0;
   }
 
-  .drop-mask {
-    &.is-dragging {
-      display: block;
-    }
+  &.disabled {
+    color: #bfbfbf;
+    cursor: not-allowed;
+  }
 
+  .drop-mask {
     display: none;
     position: absolute;
     top: 0;
@@ -41,17 +42,16 @@
     right: 0;
     z-index: 999;
     background-color: rgba(0, 0, 0, 0.05);
+
+    &.is-dragging {
+      display: block;
+    }
   }
 }
 
 .select-link {
-  //   color: #e75f4e;
   margin-left: 2px;
   cursor: pointer;
-
-  &:hover {
-    // color: #d25647;
-  }
 
   &.disabled {
     color: #bfbfbf;
@@ -82,7 +82,6 @@
 
   &.disabled {
     color: #bfbfbf;
-    cursor: not-allowed;
   }
 }
 
@@ -90,6 +89,10 @@
   font-size: 32px;
   color: #333333;
   margin-bottom: 8px;
+
+  &.disabled {
+    color: #bfbfbf;
+  }
 }
 
 .upload-wrapper {
