@@ -13,7 +13,7 @@ import type {
   PubCloudResult,
   UploadFileResult,
 } from './models';
-import rq, { RqResult } from './rq';
+import rq, { type RqResult } from './rq';
 
 export interface UploadCloudInfoData {
   md5: string;

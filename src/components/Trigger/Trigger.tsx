@@ -1,6 +1,14 @@
 import styles from './Trigger.module.scss';
-import { cloneElement, CSSProperties, ReactElement, ReactNode, useEffect } from 'react';
 import {
+  type ReactElement,
+  type ReactNode,
+  type CSSProperties,
+  useEffect,
+  cloneElement,
+} from 'react';
+import {
+  type OffsetOptions,
+  type Placement,
   autoUpdate,
   flip,
   FloatingNode,
@@ -9,8 +17,6 @@ import {
   FloatingTree,
   hide,
   offset,
-  OffsetOptions,
-  Placement,
   shift,
   size,
   useClick,

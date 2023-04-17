@@ -1,4 +1,4 @@
-import { fetch, FetchOptions, ResponseType } from '@tauri-apps/api/http';
+import { fetch, type FetchOptions, ResponseType } from '@tauri-apps/api/http';
 import { getMemoryCookie, getUserCookie } from './utils/cookie';
 
 export interface RqOptions {

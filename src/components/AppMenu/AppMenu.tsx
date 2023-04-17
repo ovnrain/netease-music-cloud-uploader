@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import useValueOnChange from '../../hooks/useValueOnChange';
-import Trigger, { TriggerProps } from '../Trigger';
+import Trigger, { type TriggerProps } from '../Trigger';
 import styles from './AppMenu.module.scss';
 
 export type MenuKey = 'logout';

@@ -1,4 +1,4 @@
-import { useState, useRef, ReactElement } from 'react';
+import { useState, useRef, type ReactElement } from 'react';
 import ConfirmModal from '../ConfirmModal';
 import Input from '../Input';
 import styles from './EditFileModal.module.scss';

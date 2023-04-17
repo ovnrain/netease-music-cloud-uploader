@@ -1,5 +1,5 @@
 import styles from './Input.module.scss';
-import { DetailedHTMLProps, forwardRef } from 'react';
+import { type DetailedHTMLProps, forwardRef } from 'react';
 import clsx from 'clsx';
 
 export interface InputProps

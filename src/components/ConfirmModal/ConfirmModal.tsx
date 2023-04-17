@@ -1,5 +1,5 @@
 import styles from './ConfirmModal.module.scss';
-import { Fragment, ReactNode, useState } from 'react';
+import { Fragment, type ReactNode, useState } from 'react';
 import clsx from 'clsx';
 import Trigger, { type TriggerProps } from '../Trigger';
 import Button from '../Button';

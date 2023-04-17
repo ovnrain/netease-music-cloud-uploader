@@ -1,5 +1,5 @@
 import styles from './MatchSongModal.module.scss';
-import { ReactElement, useRef, useState } from 'react';
+import { type ReactElement, useRef, useState } from 'react';
 import ConfirmModal from '../ConfirmModal';
 import Input from '../Input';
 

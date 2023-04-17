@@ -7,7 +7,7 @@ import { open } from '@tauri-apps/api/shell';
 import APIS from '../../apis';
 import PageLoading from '../../components/PageLoading';
 import Table from '../../components/Table';
-import { Fragment, ReactNode } from 'react';
+import { Fragment, type ReactNode } from 'react';
 import IconFont from '../../components/IconFont';
 import ConfirmModal from '../../components/ConfirmModal';
 import MatchSongModal from '../../components/MatchSongModal';
