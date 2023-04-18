@@ -6,7 +6,7 @@ import uniqBy from 'lodash.uniqby';
 import MD5 from 'spark-md5';
 import { useMutation } from '@tanstack/react-query';
 import { v4 as uuidv4 } from 'uuid';
-import produce from 'immer';
+import { produce } from 'immer';
 import bytes from 'bytes';
 import toast from 'react-hot-toast';
 import type { UploadFile } from '../../models';
