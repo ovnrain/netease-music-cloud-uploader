@@ -3,8 +3,7 @@
   "compilerOptions": {
     "outDir": "./lib",
     "rootDir": "./src",
-    "noImplicitAny": true,
-    "importsNotUsedAsValues": "error"
+    "noImplicitAny": true
   },
   "exclude": ["node_modules", "**/*.test.ts"]
 }
