@@ -27,7 +27,7 @@
     "lodash.uniqby": "^4.7.0",
     "lodash.uniqwith": "^4.5.0",
     "music-metadata": "^8.1.4",
-    "music-metadata-browser": "^2.5.9",
+    "music-metadata-browser": "^2.5.10",
     "qrcode": "^1.5.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -62,7 +62,7 @@
     "prettier": "^2.8.7",
     "sass": "^1.62.0",
     "typescript": "^5.0.4",
-    "vite": "^4.0.0",
+    "vite": "^4.2.2",
     "vite-plugin-checker": "^0.5.6"
   }
 }
