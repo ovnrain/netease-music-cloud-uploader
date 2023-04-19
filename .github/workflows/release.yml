@@ -51,3 +51,4 @@ jobs:
           GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
         with:
           gistId: '76e9f1d0cae8a20778eecd6943f173c7'
+          draft: false

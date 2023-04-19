@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { join, resolve } from 'path';
 
-import { getInput, setFailed } from '@actions/core';
+import { getBooleanInput, getInput, setFailed } from '@actions/core';
 import { getOctokit, context } from '@actions/github';
 import YAML from 'yaml';
 import format from 'date-fns/format';
@@ -83,13 +83,17 @@ async function run(): Promise<void> {
     return setFailed(`The changelog of ${vVersion} is not found`);
   }
 
+  const draft = getBooleanInput('draft', {
+    required: false,
+  });
+
   const newRelease = await repoKit.rest.repos.createRelease({
     owner: context.repo.owner,
     repo: context.repo.repo,
     tag_name: targetLog.tag,
     name: `${targetLog.tag} (${format(addHours(new Date(), 8), 'yyyy-MM-dd')})`,
     body: targetLog.notes.map((s) => `- ${s}`).join('\n'),
-    draft: false,
+    draft,
     prerelease: false,
     target_commitish: context.sha,
   });

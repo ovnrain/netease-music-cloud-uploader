@@ -4,6 +4,9 @@ inputs:
   gistId:
     description: 'updater gist id'
     required: true
+  draft:
+    description: 'draft release'
+    required: false
 runs:
   using: 'node16'
   main: 'dist/index.js'

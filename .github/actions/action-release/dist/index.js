@@ -68,13 +68,16 @@ async function run() {
     if (!targetLog) {
         return (0, core_1.setFailed)(`The changelog of ${vVersion} is not found`);
     }
+    const draft = (0, core_1.getBooleanInput)('draft', {
+        required: false,
+    });
     const newRelease = await repoKit.rest.repos.createRelease({
         owner: github_1.context.repo.owner,
         repo: github_1.context.repo.repo,
         tag_name: targetLog.tag,
         name: `${targetLog.tag} (${(0, format_1.default)((0, addHours_1.default)(new Date(), 8), 'yyyy-MM-dd')})`,
         body: targetLog.notes.map((s) => `- ${s}`).join('\n'),
-        draft: false,
+        draft,
         prerelease: false,
         target_commitish: github_1.context.sha,
     });
