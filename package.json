@@ -14,7 +14,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@floating-ui/react": "^0.23.0",
+    "@floating-ui/react": "^0.23.1",
     "@tanstack/react-query": "^4.29.3",
     "@tanstack/react-query-devtools": "^4.29.3",
     "@tauri-apps/api": "^1.2.0",
@@ -43,7 +43,7 @@
     "@types/lodash.get": "^4.4.7",
     "@types/lodash.uniqby": "^4.7.7",
     "@types/lodash.uniqwith": "^4.5.7",
-    "@types/node": "^18.15.11",
+    "@types/node": "^18.15.12",
     "@types/qrcode": "^1.5.0",
     "@types/react": "^18.0.37",
     "@types/react-dom": "^18.0.6",
@@ -62,7 +62,7 @@
     "prettier": "^2.8.7",
     "sass": "^1.62.0",
     "typescript": "^5.0.4",
-    "vite": "^4.2.2",
+    "vite": "^4.3.0",
     "vite-plugin-checker": "^0.5.6"
   }
 }

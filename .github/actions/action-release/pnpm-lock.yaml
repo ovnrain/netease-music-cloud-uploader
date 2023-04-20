@@ -22,8 +22,8 @@ devDependencies:
     specifier: ^1.0.3
     version: 1.0.3
   '@types/node':
-    specifier: ^18.15.11
-    version: 18.15.11
+    specifier: ^18.15.12
+    version: 18.15.12
   '@vercel/ncc':
     specifier: ^0.36.1
     version: 0.36.1
@@ -149,8 +149,8 @@ packages:
     resolution: {integrity: sha512-yOlFc+7UtL/89t2ZhjPvvB/DeAr3r+Dq58IgzsFkOAvVC6NMJXmCGjbptdXdR9qsX7pKcTL+s87FtYREi2dEEQ==}
     dev: true
 
-  /@types/node@18.15.11:
-    resolution: {integrity: sha512-E5Kwq2n4SbMzQOn6wnmBjuK9ouqlURrcZDVfbo9ftDDTFt3nk7ZKK4GMOzoYgnpQJKcxwQw+lGaBvvlMo0qN/Q==}
+  /@types/node@18.15.12:
+    resolution: {integrity: sha512-Wha1UwsB3CYdqUm2PPzh/1gujGCNtWVUYF0mB00fJFoR4gTyWTDPjSm+zBF787Ahw8vSGgBja90MkgFwvB86Dg==}
     dev: true
 
   /@vercel/ncc@0.36.1:
