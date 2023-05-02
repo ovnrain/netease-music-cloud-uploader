@@ -98,33 +98,32 @@ const InnerTrigger = (props: TriggerProps) => {
 
   const nodeId = useFloatingNodeId();
 
-  const { x, y, reference, floating, context, middlewareData, refs, strategy, update } =
-    useFloating({
-      nodeId,
-      placement: placement ?? 'bottom-start',
-      open: computedOpen,
-      onOpenChange: onOpenChange,
-      middleware: [
-        offset(offsetOptions),
-        flip({ padding: flipPadding ?? 8 }),
-        shift({ padding: shiftPadding ?? 8 }),
-        size({
-          apply: ({ rects, elements }) => {
-            if (equalWidth) {
-              Object.assign(elements.floating.style, {
-                width: `${rects.reference.width}px`,
-              });
-            } else if (equalMinWidth) {
-              Object.assign(elements.floating.style, {
-                minWidth: `${rects.reference.width}px`,
-              });
-            }
-          },
-        }),
-        hide({ strategy: 'referenceHidden' }),
-      ],
-      whileElementsMounted: !isContextMenu ? autoUpdate : undefined,
-    });
+  const { x, y, context, middlewareData, refs, update, floatingStyles } = useFloating({
+    nodeId,
+    placement: placement ?? 'bottom-start',
+    open: computedOpen,
+    onOpenChange: onOpenChange,
+    middleware: [
+      offset(offsetOptions),
+      flip({ padding: flipPadding ?? 8 }),
+      shift({ padding: shiftPadding ?? 8 }),
+      size({
+        apply: ({ rects, elements }) => {
+          if (equalWidth) {
+            Object.assign(elements.floating.style, {
+              width: `${rects.reference.width}px`,
+            });
+          } else if (equalMinWidth) {
+            Object.assign(elements.floating.style, {
+              minWidth: `${rects.reference.width}px`,
+            });
+          }
+        },
+      }),
+      hide({ strategy: 'referenceHidden' }),
+    ],
+    whileElementsMounted: !isContextMenu ? autoUpdate : undefined,
+  });
 
   const { getReferenceProps, getFloatingProps } = useInteractions([
     useHover(context, { delay, restMs, enabled: !disabled && trigger === 'hover' }),
@@ -148,7 +147,7 @@ const InnerTrigger = (props: TriggerProps) => {
 
   const onContextMenu = (e: MouseEvent) => {
     e.preventDefault();
-    reference({
+    refs.setReference({
       getBoundingClientRect: () => ({
         x: e.clientX,
         y: e.clientY,
@@ -166,11 +165,9 @@ const InnerTrigger = (props: TriggerProps) => {
   const popupNode = (
     <div
       {...getFloatingProps({
-        ref: floating,
+        ref: refs.setFloating,
         style: {
-          position: strategy,
-          left: 0,
-          top: 0,
+          ...floatingStyles,
           maxHeight,
           transform: `translate3d(${Math.round(x ?? 0)}px,${Math.round(y ?? 0)}px,0)`,
           zIndex: showOverlay ? undefined : zIndex,
@@ -192,7 +189,7 @@ const InnerTrigger = (props: TriggerProps) => {
       {cloneElement(
         children,
         getReferenceProps({
-          ref: !isContextMenu ? reference : undefined,
+          ref: !isContextMenu ? refs.setReference : undefined,
           ...children.props,
           className: clsx(
             styles.trigger,
