@@ -18,15 +18,24 @@ dependencies:
     version: 2.2.2
 
 devDependencies:
+  '@tsconfig/esm':
+    specifier: ^1.0.3
+    version: 1.0.3
   '@tsconfig/node16':
     specifier: ^1.0.3
     version: 1.0.3
+  '@tsconfig/strictest':
+    specifier: ^2.0.1
+    version: 2.0.1
   '@types/node':
     specifier: ^18.16.6
     version: 18.16.6
   '@vercel/ncc':
     specifier: ^0.36.1
     version: 0.36.1
+  prettier:
+    specifier: ^2.8.8
+    version: 2.8.8
   typescript:
     specifier: ~5.0.4
     version: 5.0.4
@@ -152,8 +161,16 @@ packages:
       '@octokit/openapi-types': 12.11.0
     dev: false
 
+  /@tsconfig/esm@1.0.3:
+    resolution: {integrity: sha512-Gp56rIc3R8ab032nXMUitmc7YIb4nAi8DQ6Qt47tuL0Ssn9LIOm+o2FQmqPu3jX4z0TsqgzWwkmVygxcq+yHYg==}
+    dev: true
+
   /@tsconfig/node16@1.0.3:
     resolution: {integrity: sha512-yOlFc+7UtL/89t2ZhjPvvB/DeAr3r+Dq58IgzsFkOAvVC6NMJXmCGjbptdXdR9qsX7pKcTL+s87FtYREi2dEEQ==}
+    dev: true
+
+  /@tsconfig/strictest@2.0.1:
+    resolution: {integrity: sha512-7JHHCbyCsGUxLd0pDbp24yz3zjxw2t673W5oAP6HCEdr/UUhaRhYd3SSnUsGCk+VnPVJVA4mXROzbhI+nyIk+w==}
     dev: true
 
   /@types/node@18.16.6:
@@ -278,6 +295,12 @@ packages:
     resolution: {integrity: sha512-haREypq7xkM7ErfgIyA0z+Bj4AGKlMSdlQE2jvJo6huWD1EdkKYV+G/T4nq0YEF2vgTT8kqMFKo1uHn950r4SQ==}
     engines: {node: '>=12'}
     dev: false
+
+  /prettier@2.8.8:
+    resolution: {integrity: sha512-tdN8qQGvNjw4CHbY+XXk0JgCXn9QiF21a55rBe5LJAU+kDyC4WQn4+awm2Xfk2lQMk5fKup9XgzTZtGkjBdP9Q==}
+    engines: {node: '>=10.13.0'}
+    hasBin: true
+    dev: true
 
   /regenerator-runtime@0.13.11:
     resolution: {integrity: sha512-kY1AZVr2Ra+t+piVaJ4gxaFaReZVH40AKNo7UCX6W+dEwBo/2oZJzqfuN1qLq1oL45o56cPaTXELwrTh8Fpggg==}

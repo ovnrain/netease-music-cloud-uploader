@@ -4,7 +4,7 @@
   "description": "",
   "main": "lib/index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && prettier --write dist/*.js",
     "package": "ncc build",
     "all": "npm run build && npm run package"
   },
@@ -19,9 +19,13 @@
     "yaml": "^2.2.2"
   },
   "devDependencies": {
+    "@tsconfig/esm": "^1.0.3",
     "@tsconfig/node16": "^1.0.3",
+    "@tsconfig/strictest": "^2.0.1",
     "@types/node": "^18.16.6",
     "@vercel/ncc": "^0.36.1",
+    "prettier": "^2.8.8",
     "typescript": "~5.0.4"
-  }
+  },
+  "type": "module"
 }

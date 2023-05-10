@@ -1,9 +1,16 @@
 {
-  "extends": "@tsconfig/node16/tsconfig.json",
+  "extends": [
+    "@tsconfig/strictest/tsconfig.json",
+    "@tsconfig/node16/tsconfig.json",
+    "@tsconfig/esm/tsconfig.json"
+  ],
   "compilerOptions": {
-    "outDir": "./lib",
+    "outDir": "./dist",
     "rootDir": "./src",
-    "noImplicitAny": true
+    "module": "NodeNext",
+    "moduleResolution": "node16",
+    "target": "ESNext"
   },
-  "exclude": ["node_modules", "**/*.test.ts"]
+  "include": ["src"],
+  "exclude": ["node_modules", "**/*.test.ts", "dist"]
 }

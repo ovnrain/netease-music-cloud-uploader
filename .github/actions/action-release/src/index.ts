@@ -4,11 +4,9 @@ import { join, resolve } from 'path';
 import { getBooleanInput, getInput, setFailed } from '@actions/core';
 import { getOctokit, context } from '@actions/github';
 import YAML from 'yaml';
-import format from 'date-fns/format';
-import addHours from 'date-fns/addHours';
-import formatRFC3339 from 'date-fns/formatRFC3339';
+import { format, addHours, formatRFC3339 } from 'date-fns';
 
-import { execCommand } from './utils';
+import { execCommand } from './utils.js';
 
 async function run(): Promise<void> {
   if (typeof process.env.GITHUB_TOKEN === 'undefined') {
