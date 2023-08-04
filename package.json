@@ -15,8 +15,8 @@
   },
   "dependencies": {
     "@floating-ui/react": "^0.25.0",
-    "@tanstack/react-query": "^4.32.1",
-    "@tanstack/react-query-devtools": "^4.32.1",
+    "@tanstack/react-query": "^4.32.5",
+    "@tanstack/react-query-devtools": "^4.32.5",
     "@tauri-apps/api": "^1.4.0",
     "buffer": "^6.0.3",
     "bytes": "^3.1.2",
@@ -37,7 +37,7 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "@tanstack/eslint-plugin-query": "^4.32.1",
+    "@tanstack/eslint-plugin-query": "^4.32.5",
     "@tauri-apps/cli": "^1.4.0",
     "@types/bytes": "^3.1.1",
     "@types/lodash.get": "^4.4.7",
