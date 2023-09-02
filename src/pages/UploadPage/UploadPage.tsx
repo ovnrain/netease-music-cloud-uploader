@@ -17,7 +17,6 @@ import Table from '../../components/Table';
 import IconFont from '../../components/IconFont';
 import ConfirmModal from '../../components/ConfirmModal';
 import EditFileModal from '../../components/EditFileModal';
-import useDisableDrop from '../../hooks/useDisableDrop';
 
 export interface UploadPageProps {}
 
@@ -31,9 +30,6 @@ const UploadPage = (props: UploadPageProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
-
-  // 禁用 document 的 drop 事件
-  useDisableDrop();
 
   const pendingUploadFiles = uploadFiles.filter((file) => file.status === 'pending');
   const unfinishedUploadFiles = uploadFiles.filter((file) => file.status !== 'uploaded');

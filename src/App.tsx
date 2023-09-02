@@ -6,11 +6,15 @@ import Button from './components/Button';
 import { replaceHttpWithHttps } from './utils/common';
 import AppMenu from './components/AppMenu';
 import { setMemoryCookie, setUserCookie } from './utils/cookie';
+import useDisableDrop from './hooks/useDisableDrop';
 
 function App() {
   const queryClient = useQueryClient();
   const isMutating = useIsMutating() > 0;
   const userInfo = useUserInfo();
+
+  // 禁用 document 的 drop 事件
+  useDisableDrop();
 
   return (
     <div className={styles.container}>
