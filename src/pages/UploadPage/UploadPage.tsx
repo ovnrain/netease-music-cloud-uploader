@@ -107,11 +107,11 @@ const UploadPage = (props: UploadPageProps) => {
 
     for (let index = 0; index < validFiles.length; index++) {
       const file = validFiles[index];
-      const md5 = MD5.ArrayBuffer.hash(await file.arrayBuffer());
+      const buffer = await file.arrayBuffer();
+      const md5 = MD5.ArrayBuffer.hash(buffer);
       const ext = (file.name.split('.').pop() as string).toUpperCase();
 
       try {
-        const buffer = await file.arrayBuffer();
         const metadata = (await parseBuffer(Buffer.from(buffer))).common;
 
         uploadFiles.push({
