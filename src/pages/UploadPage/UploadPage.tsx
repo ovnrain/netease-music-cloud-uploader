@@ -31,7 +31,9 @@ const UploadPage = (props: UploadPageProps) => {
   const [isUploading, setIsUploading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
 
+  // 校验合规的，待上传的文件
   const pendingUploadFiles = uploadFiles.filter((file) => file.status === 'pending');
+  // 包含有错的文件
   const unfinishedUploadFiles = uploadFiles.filter((file) => file.status !== 'uploaded');
 
   const isSelectFilesDisabled = isUploading || pendingUploadFiles.length >= MAX_SELECT_FILES;
@@ -283,7 +285,10 @@ const UploadPage = (props: UploadPageProps) => {
       )}
       <div
         className={clsx(styles.selectWrapper, {
+          // 有待上传的文件，那么 flex 就不要设置为 1 了
           [styles.hasSongs]: unfinishedUploadFiles.length > 0,
+          // 有待上传的文件，但是没有合规的文件，此时上传按钮会被隐藏，那么这里得加点 margin
+          [styles.onlyError]: unfinishedUploadFiles.length > 0 && pendingUploadFiles.length === 0,
           [styles.disabled]: isSelectFilesDisabled,
         })}
         onDragEnter={!isSelectFilesDisabled ? handleDragEnter : undefined}

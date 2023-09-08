@@ -26,6 +26,11 @@
     padding: 32px 0;
     flex: none;
     margin: 16px 16px 0;
+    flex-shrink: 0;
+  }
+
+  &.only-error {
+    margin-bottom: 16px;
   }
 
   &.disabled {
@@ -69,6 +74,7 @@
   padding: 16px;
   display: flex;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .select-link {
@@ -93,12 +99,6 @@
   &.disabled {
     color: #bfbfbf;
   }
-}
-
-.upload-wrapper {
-  padding: 16px;
-  display: flex;
-  justify-content: center;
 }
 
 .error {
