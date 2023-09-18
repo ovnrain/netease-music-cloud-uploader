@@ -10,7 +10,7 @@
     "build": "tauri build --target x86_64-apple-darwin",
     "tauri": "tauri",
     "format": "prettier --write 'src/**/*.{ts,tsx,css,scss}'",
-    "lint": "eslint --ext .ts,.tsx src/**/*.{ts,tsx}",
+    "lint": "eslint --config .eslintrc.commit.json './src/**/*.{ts,tsx}'",
     "prepare": "husky install"
   },
   "dependencies": {
