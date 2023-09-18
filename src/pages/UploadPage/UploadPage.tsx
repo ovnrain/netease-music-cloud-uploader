@@ -240,7 +240,7 @@ const UploadPage = (props: UploadPageProps) => {
                                 target.metadata.artist = data.artist;
                                 target.metadata.album = data.album;
                               }
-                            })
+                            }),
                           );
                         }}
                       >
@@ -262,7 +262,7 @@ const UploadPage = (props: UploadPageProps) => {
                               if (index !== -1) {
                                 draft.splice(index, 1);
                               }
-                            })
+                            }),
                           );
                         }}
                         placement="left"
@@ -344,7 +344,7 @@ const UploadPage = (props: UploadPageProps) => {
                     if (target) {
                       target.status = 'uploading';
                     }
-                  })
+                  }),
                 );
                 try {
                   await upload.mutateAsync(file, {
@@ -356,7 +356,7 @@ const UploadPage = (props: UploadPageProps) => {
                             target.status = 'error';
                             target.error = error instanceof Error ? error : new Error('未知错误');
                           }
-                        })
+                        }),
                       );
                     },
                     onSuccess: () => {
@@ -366,7 +366,7 @@ const UploadPage = (props: UploadPageProps) => {
                           if (target) {
                             target.status = 'uploaded';
                           }
-                        })
+                        }),
                       );
                     },
                   });

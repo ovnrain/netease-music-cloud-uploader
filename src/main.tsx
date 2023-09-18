@@ -66,5 +66,5 @@ root.render(
         }}
       />
     </QueryClientProvider>
-  </StrictMode>
+  </StrictMode>,
 );

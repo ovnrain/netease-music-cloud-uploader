@@ -50,7 +50,7 @@ function getUniKey() {
     },
     {
       useCookie: false,
-    }
+    },
   );
 }
 
@@ -62,7 +62,7 @@ function qrLogin(uniKey: string) {
     },
     {
       useCookie: false,
-    }
+    },
   );
 }
 
@@ -96,7 +96,7 @@ async function uploadCheck(uploadFile: UploadFile) {
         md5: uploadFile.md5,
         size: `${uploadFile.file.size}`,
       }),
-    }
+    },
   );
 
   if (response.code !== 200 && response.code !== 201) {

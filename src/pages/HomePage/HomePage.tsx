@@ -114,7 +114,7 @@ const HomePage = (props: HomePageProps) => {
                     >
                       {name}
                     </span>
-                  )
+                  ),
                 )
                 .reduce((prev, curr) => [prev, ' / ', curr]);
             },
@@ -208,7 +208,7 @@ const HomePage = (props: HomePageProps) => {
                         },
                         {
                           id: `match-cloud-${record.songId}`,
-                        }
+                        },
                       );
                     }}
                   >
@@ -229,7 +229,7 @@ const HomePage = (props: HomePageProps) => {
                         },
                         {
                           id: `delete-cloud-${record.songId}`,
-                        }
+                        },
                       );
                     }}
                   >

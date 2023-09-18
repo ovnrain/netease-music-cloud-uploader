@@ -6,7 +6,7 @@ import { useState } from 'react';
 export default function useValueOnChange<T = unknown>(
   defaultValue?: T,
   value?: T,
-  onChange?: (value: T) => void
+  onChange?: (value: T) => void,
 ) {
   const [stateValue, setStateValue] = useState(defaultValue);
 

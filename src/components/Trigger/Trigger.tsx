@@ -176,7 +176,7 @@ const InnerTrigger = (props: TriggerProps) => {
         className: clsx(
           styles.popup,
           { [styles.hide]: middlewareData.hide?.referenceHidden },
-          popupClassName
+          popupClassName,
         ),
       })}
     >
@@ -196,10 +196,10 @@ const InnerTrigger = (props: TriggerProps) => {
             { [styles.pointer]: !isContextMenu },
             { [styles.noSelect]: !isContextMenu || computedOpen },
             { [styles.disabled]: disabled },
-            children.props.className
+            children.props.className,
           ),
           onContextMenu: isContextMenu && !disabled ? onContextMenu : undefined,
-        })
+        }),
       )}
       <FloatingPortal>
         {computedOpen &&

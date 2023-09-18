@@ -20,7 +20,7 @@ const defaultOptions: FetchOptions = {
 export default async function rq<T>(
   url: string,
   options?: Partial<FetchOptions>,
-  rqOptions?: RqOptions
+  rqOptions?: RqOptions,
 ): Promise<RqResult<T>> {
   const cookie = (getMemoryCookie() || (await getUserCookie())).trim();
   const useCookie = (rqOptions?.useCookie ?? true) && cookie.length > 0;
