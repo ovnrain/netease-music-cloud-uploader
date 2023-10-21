@@ -6,7 +6,7 @@ export default function useSetMemoryCookie() {
   const { data: userCookie } = useQuery({
     queryKey: ['userCookie'],
     queryFn: getUserCookie,
-    cacheTime: 0,
+    gcTime: 0,
   });
 
   useEffect(() => {

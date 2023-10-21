@@ -27,26 +27,30 @@ const HomePage = (props: HomePageProps) => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-    status,
+    isLoading,
   } = useInfiniteQuery({
     queryKey: ['cloudList'],
-    queryFn: ({ pageParam = 1 }) => APIS.getCloudData(pageParam),
+    queryFn: ({ pageParam }) => APIS.getCloudData(pageParam),
+    initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.result.nextPage,
   });
   const deleteCloud = useMutation({
     mutationFn: APIS.deleteCloud,
     onSettled: () => {
-      queryClient.invalidateQueries(['cloudList']);
+      queryClient.invalidateQueries({
+        queryKey: ['cloudList'],
+      });
     },
   });
   const matchSong = useMutation({
     mutationFn: APIS.matchSong,
     onSettled: () => {
-      queryClient.invalidateQueries(['cloudList']);
+      queryClient.invalidateQueries({
+        queryKey: ['cloudList'],
+      });
     },
   });
 
-  const isLoading = status === 'loading';
   const cloudSongs =
     cloudData?.pages?.reduce<CloudSong[]>((prev, curr) => {
       return [...prev, ...curr.result.data];

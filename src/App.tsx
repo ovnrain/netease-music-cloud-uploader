@@ -37,7 +37,9 @@ function App() {
               if (key === 'logout') {
                 await setUserCookie('');
                 setMemoryCookie('');
-                queryClient.invalidateQueries(['userInfo']);
+                queryClient.invalidateQueries({
+                  queryKey: ['userInfo'],
+                });
               }
             }}
             disabled={isMutating}

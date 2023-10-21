@@ -1,7 +1,7 @@
 import styles from './LoginPage.module.scss';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import QRCode from 'qrcode';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import APIS from '../../apis';
 import PageLoading from '../../components/PageLoading';
@@ -23,7 +23,7 @@ const LoginPage = (props: LoginPageProps) => {
     queryKey: ['unikey'],
     queryFn: APIS.getUniKey,
     refetchOnWindowFocus: false,
-    cacheTime: 0,
+    gcTime: 0,
   });
   const uniKey = uniKeyResponse?.result.unikey;
   const { data: qrImg } = useQuery({
@@ -39,22 +39,32 @@ const LoginPage = (props: LoginPageProps) => {
   const { data: loginResponse } = useQuery({
     queryKey: ['login', uniKey],
     queryFn: () => APIS.qrLogin(uniKey as string),
-    refetchInterval: (res) => (res?.code === 800 || res?.code === 803 ? false : 1000),
+    refetchInterval: (query) =>
+      query.state.data?.code === 800 || query.state.data?.code === 803 ? false : 1000,
     enabled: !!uniKey && !!qrImg,
-    onSuccess: async (res) => {
-      if (res.code === 803) {
+    refetchOnWindowFocus: false,
+  });
+
+  useEffect(() => {
+    async function checkLogin() {
+      if (loginResponse?.code === 803) {
         const cookie =
-          res.cookies?.map((c) => c.replace(/\s*Domain=[^(;|$)]+;*/, '')).join(';') || '';
+          loginResponse.cookies?.map((c) => c.replace(/\s*Domain=[^(;|$)]+;*/, '')).join(';') || '';
         setMemoryCookie(cookie);
         await setUserCookie(cookie);
         // 非常重要！！！
-        queryClient.removeQueries(['userInfo']);
-        queryClient.removeQueries(['cloudList']);
+        queryClient.removeQueries({
+          queryKey: ['userInfo'],
+        });
+        queryClient.removeQueries({
+          queryKey: ['cloudList'],
+        });
         navigate('/');
       }
-    },
-    refetchOnWindowFocus: false,
-  });
+    }
+
+    checkLogin();
+  }, [loginResponse?.code, loginResponse?.cookies, navigate, queryClient]);
 
   const loginStatus = loginResponse?.result;
 
