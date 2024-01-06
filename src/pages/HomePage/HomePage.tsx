@@ -1,6 +1,6 @@
 import styles from './HomePage.module.scss';
 import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import format from 'date-fns/format';
+import { format } from 'date-fns/format';
 import bytes from 'bytes';
 import toast from 'react-hot-toast';
 import { open } from '@tauri-apps/api/shell';
