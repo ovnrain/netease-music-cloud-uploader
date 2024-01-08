@@ -24,7 +24,7 @@ async function run(): Promise<void> {
   const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 
   const productName = tauriConfig.package.productName;
-  const version = tauriConfig.package.version;
+  const version = pkg.version;
   const vVersion = `v${version}`;
   const pkgName = pkg.name;
 
@@ -52,7 +52,7 @@ async function run(): Promise<void> {
   for (const arch of ['aarch64', 'x64']) {
     const bundlePath = join(
       projectPath,
-      `src-tauri/target/${arch === 'x64' ? 'x86_64' : arch}-apple-darwin/release/bundle`
+      `src-tauri/target/${arch === 'x64' ? 'x86_64' : arch}-apple-darwin/release/bundle`,
     );
 
     const originDmgPath = join(bundlePath, 'dmg', `${productName}_${version}_${arch}.dmg`);
@@ -75,7 +75,7 @@ async function run(): Promise<void> {
   }
 
   const changelog: { tag: string; notes: string[] }[] = YAML.parse(
-    fs.readFileSync(join(projectPath, 'changelog.yaml'), 'utf8')
+    fs.readFileSync(join(projectPath, 'changelog.yaml'), 'utf8'),
   );
   const targetLog = changelog.find((log) => log.tag === vVersion);
 
@@ -144,7 +144,7 @@ async function run(): Promise<void> {
             platforms,
           },
           null,
-          2
+          2,
         ),
       },
     },
