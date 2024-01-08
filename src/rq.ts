@@ -42,8 +42,8 @@ export default async function rq<T>(
           },
         }
     : options
-    ? { ...defaultOptions, ...options }
-    : defaultOptions;
+      ? { ...defaultOptions, ...options }
+      : defaultOptions;
 
   const res = await fetch<T>(url, fetchOptions);
   const { code, msg, message, ...rest } = res.data as {
