@@ -152,6 +152,9 @@ async function pubCloud(data: { songid: string }) {
   });
 
   if (response.code !== 200 && response.code !== 201) {
+    if (response.code === 523) {
+      throw new Error('VIP禁止歌曲，建议修改文件 md5 再上传');
+    }
     throw new Error(response.message || '歌曲发布错误');
   }
 

@@ -37,14 +37,16 @@ const MatchSongModal = (props: MatchSongModalProps) => {
       return false;
     }
 
-    if (/^http/.test(value) && !linkReg.test(value)) {
-      setMatchError('链接格式不正确');
-      return false;
-    }
-
-    if (!/^\d+$/.test(value)) {
-      setMatchError('ID格式不正确');
-      return false;
+    if (value.startsWith('http')) {
+      if (!linkReg.test(value)) {
+        setMatchError('链接格式不正确');
+        return false;
+      }
+    } else {
+      if (!/^\d+$/.test(value)) {
+        setMatchError('ID格式不正确');
+        return false;
+      }
     }
 
     setMatchError('');

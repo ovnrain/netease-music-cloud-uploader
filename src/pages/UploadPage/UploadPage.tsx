@@ -31,8 +31,10 @@ const UploadPage = (props: UploadPageProps) => {
   const [isUploading, setIsUploading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
 
-  // 校验合规的，待上传的文件
-  const pendingUploadFiles = uploadFiles.filter((file) => file.status === 'pending');
+  // 校验合规的，待上传的文件，如果有上传失败的，允许重试
+  const pendingUploadFiles = uploadFiles.filter(
+    (file) => file.status === 'pending' || file.status === 'error',
+  );
   // 包含有错的文件
   const unfinishedUploadFiles = uploadFiles.filter((file) => file.status !== 'uploaded');
 
@@ -343,6 +345,7 @@ const UploadPage = (props: UploadPageProps) => {
                     const target = draft.find((f) => f.md5 === file.md5);
                     if (target) {
                       target.status = 'uploading';
+                      target.error = undefined;
                     }
                   }),
                 );
