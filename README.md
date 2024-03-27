@@ -14,7 +14,6 @@
 ![图4](https://user-images.githubusercontent.com/18333709/232038839-5fa1f0b2-f793-4430-b430-1ce79bb1449f.jpg)
 ![图5](https://user-images.githubusercontent.com/18333709/232038847-79637b3c-191a-4f01-b864-bd7447336ace.jpg)
 
-
 ## 常见问题
 
 ### 1. 无法打开“网易云音乐云盘上传”，因为无法验证开发者。
@@ -50,3 +49,7 @@
 
 - [网易云音乐云盘上传管理 Chrome / Edge 插件](https://github.com/ydq/netease-cloud-disk-music-upload)
 - [Binaryify/NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi)
+
+## Star 趋势
+
+[![Stargazers over time](https://starchart.cc/ovnrain/netease-music-cloud-uploader.svg?variant=adaptive)](https://starchart.cc/ovnrain/netease-music-cloud-uploader)
