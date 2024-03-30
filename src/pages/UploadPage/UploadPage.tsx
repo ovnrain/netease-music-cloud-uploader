@@ -155,6 +155,107 @@ const UploadPage = (props: UploadPageProps) => {
 
   return (
     <div className={styles.container}>
+      <div
+        className={clsx(styles.selectWrapper, {
+          // 有待上传的文件，那么 flex 就不要设置为 1 了
+          [styles.hasSongs]: unfinishedUploadFiles.length > 0,
+          // 有待上传的文件，但是没有合规的文件，此时上传按钮会被隐藏，那么这里得加点 margin
+          [styles.onlyError]: unfinishedUploadFiles.length > 0 && pendingUploadFiles.length === 0,
+          [styles.disabled]: isSelectFilesDisabled,
+        })}
+        onDragEnter={!isSelectFilesDisabled ? handleDragEnter : undefined}
+      >
+        <div
+          className={clsx(styles.dropMask, {
+            [styles.isDragging]: isDragging,
+          })}
+          onDragLeave={handleDragLeave}
+          onDrop={!isSelectFilesDisabled ? handleDrops : undefined}
+        />
+        <input
+          key={inputKey}
+          type="file"
+          accept={audioTypes.map((t) => `.${t}`).join(',')}
+          onChange={onSelectChange}
+          ref={fileInputRef}
+          multiple
+          hidden
+        />
+        <IconFont
+          className={clsx(styles.uploadIcon, { [styles.disabled]: isSelectFilesDisabled })}
+          type="ne-cloud-upload"
+        />
+        <div>
+          <span>将文件拖拽到此处，或</span>
+          <span
+            className={clsx(styles.selectLink, {
+              [styles.disabled]: isSelectFilesDisabled,
+            })}
+            onClick={() => {
+              if (!isSelectFilesDisabled) {
+                fileInputRef.current?.click();
+              }
+            }}
+          >
+            选择文件
+          </span>
+        </div>
+      </div>
+      {pendingUploadFiles.length > 0 && (
+        <div className={styles.uploadWrapper}>
+          <Button
+            className={styles.uploadButton}
+            onClick={async () => {
+              setIsUploading(true);
+
+              for (let index = 0; index < pendingUploadFiles.length; index++) {
+                const file = pendingUploadFiles[index];
+                setUploadFiles(
+                  produce((draft) => {
+                    const target = draft.find((f) => f.md5 === file.md5);
+                    if (target) {
+                      target.status = 'uploading';
+                    }
+                  }),
+                );
+                try {
+                  await upload.mutateAsync(file, {
+                    onError: (error) => {
+                      setUploadFiles(
+                        produce((draft) => {
+                          const target = draft.find((f) => f.md5 === file.md5);
+                          if (target) {
+                            target.status = 'error';
+                            target.error = error instanceof Error ? error : new Error('未知错误');
+                          }
+                        }),
+                      );
+                    },
+                    onSuccess: () => {
+                      setUploadFiles(
+                        produce((draft) => {
+                          const target = draft.find((f) => f.md5 === file.md5);
+                          if (target) {
+                            target.status = 'uploaded';
+                          }
+                        }),
+                      );
+                    },
+                  });
+                } catch (e) {
+                  //
+                }
+              }
+
+              setIsUploading(false);
+            }}
+            icon="ne-upload"
+            disabled={isUploading}
+          >
+            上传全部
+          </Button>
+        </div>
+      )}
       {unfinishedUploadFiles.length > 0 && (
         <div className={styles.tableWrapper}>
           <Table
@@ -281,107 +382,6 @@ const UploadPage = (props: UploadPageProps) => {
             ]}
             rowKey="md5"
           />
-        </div>
-      )}
-      <div
-        className={clsx(styles.selectWrapper, {
-          // 有待上传的文件，那么 flex 就不要设置为 1 了
-          [styles.hasSongs]: unfinishedUploadFiles.length > 0,
-          // 有待上传的文件，但是没有合规的文件，此时上传按钮会被隐藏，那么这里得加点 margin
-          [styles.onlyError]: unfinishedUploadFiles.length > 0 && pendingUploadFiles.length === 0,
-          [styles.disabled]: isSelectFilesDisabled,
-        })}
-        onDragEnter={!isSelectFilesDisabled ? handleDragEnter : undefined}
-      >
-        <div
-          className={clsx(styles.dropMask, {
-            [styles.isDragging]: isDragging,
-          })}
-          onDragLeave={handleDragLeave}
-          onDrop={!isSelectFilesDisabled ? handleDrops : undefined}
-        />
-        <input
-          key={inputKey}
-          type="file"
-          accept={audioTypes.map((t) => `.${t}`).join(',')}
-          onChange={onSelectChange}
-          ref={fileInputRef}
-          multiple
-          hidden
-        />
-        <IconFont
-          className={clsx(styles.uploadIcon, { [styles.disabled]: isSelectFilesDisabled })}
-          type="ne-cloud-upload"
-        />
-        <div>
-          <span>将文件拖拽到此处，或</span>
-          <span
-            className={clsx(styles.selectLink, {
-              [styles.disabled]: isSelectFilesDisabled,
-            })}
-            onClick={() => {
-              if (!isSelectFilesDisabled) {
-                fileInputRef.current?.click();
-              }
-            }}
-          >
-            选择文件
-          </span>
-        </div>
-      </div>
-      {pendingUploadFiles.length > 0 && (
-        <div className={styles.uploadWrapper}>
-          <Button
-            className={styles.uploadButton}
-            onClick={async () => {
-              setIsUploading(true);
-
-              for (let index = 0; index < pendingUploadFiles.length; index++) {
-                const file = pendingUploadFiles[index];
-                setUploadFiles(
-                  produce((draft) => {
-                    const target = draft.find((f) => f.md5 === file.md5);
-                    if (target) {
-                      target.status = 'uploading';
-                    }
-                  }),
-                );
-                try {
-                  await upload.mutateAsync(file, {
-                    onError: (error) => {
-                      setUploadFiles(
-                        produce((draft) => {
-                          const target = draft.find((f) => f.md5 === file.md5);
-                          if (target) {
-                            target.status = 'error';
-                            target.error = error instanceof Error ? error : new Error('未知错误');
-                          }
-                        }),
-                      );
-                    },
-                    onSuccess: () => {
-                      setUploadFiles(
-                        produce((draft) => {
-                          const target = draft.find((f) => f.md5 === file.md5);
-                          if (target) {
-                            target.status = 'uploaded';
-                          }
-                        }),
-                      );
-                    },
-                  });
-                } catch (e) {
-                  //
-                }
-              }
-
-              setIsUploading(false);
-            }}
-            icon="ne-upload"
-            disabled={isUploading}
-          >
-            上传全部
-          </Button>
         </div>
       )}
     </div>
